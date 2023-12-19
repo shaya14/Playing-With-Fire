@@ -17,22 +17,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Bomb _bombPrefab;
     Rigidbody2D _rb;
     [HideInInspector] public KeyCode _upKey;
-    [HideInInspector]  public KeyCode _downKey;
-    [HideInInspector]  public KeyCode _leftKey;
-    [HideInInspector]  public KeyCode _rightKey;
-    [HideInInspector]  public KeyCode _bombKey;
+    [HideInInspector] public KeyCode _downKey;
+    [HideInInspector] public KeyCode _leftKey;
+    [HideInInspector] public KeyCode _rightKey;
+    [HideInInspector] public KeyCode _bombKey;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
     }
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Movement();
         SpawnBomb();
@@ -46,90 +41,66 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(KeyCode.W))
                 {
                     //Move Up
-                    Vector3 direction = Vector3.up * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    //Move Left
-                    Vector3 direction = Vector3.left * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     //Move Down
-                    Vector3 direction = Vector3.down * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    //Move Left
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     //Move Right
-                    Vector3 direction = Vector3.right * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
                 }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
                     //Move Up
-                    Vector3 direction = Vector3.up * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
-                }
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    //Move Left
-                    Vector3 direction = Vector3.left * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
                     //Move Down
-                    Vector3 direction = Vector3.down * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                }
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    //Move Left
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(KeyCode.RightArrow))
                 {
                     //Move Right
-                    Vector3 direction = Vector3.right * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
                 }
                 break;
             case PlayerInput.Custom:
                 if (Input.GetKey(_upKey))
                 {
                     //Move Up
-                    Vector3 direction = Vector3.up * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
-                }
-                else if (Input.GetKey(_leftKey))
-                {
-                    //Move Left
-                    Vector3 direction = Vector3.left * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(_downKey))
                 {
                     //Move Down
-                    Vector3 direction = Vector3.down * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                }
+                else if (Input.GetKey(_leftKey))
+                {
+                    //Move Left
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
                 }
                 else if (Input.GetKey(_rightKey))
                 {
                     //Move Right
-                    Vector3 direction = Vector3.right * _moveSpeed * Time.deltaTime;
-                    Vector3 movement = transform.position + direction;
-                    _rb.MovePosition(movement);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
                 }
                 break;
             default:
@@ -166,6 +137,13 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         //Spawn bomb
+    }
+    private void MoveCalculation(Vector3 direction, float moveSpeed, Vector3 position, Rigidbody2D rb)
+    {
+        Vector3 dir = direction * moveSpeed * Time.fixedDeltaTime;
+        position = transform.position;
+        Vector3 movement = position + dir;
+        rb.MovePosition(movement);
     }
 }
 
