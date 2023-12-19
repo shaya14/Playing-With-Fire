@@ -16,15 +16,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _moveSpeed;
     [SerializeField] Bomb _bombPrefab;
     Rigidbody2D _rb;
+
+    [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
+    [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
+    [SerializeField] AnimatedSpriteRenderer _spriteRendererLeft;
+    [SerializeField] AnimatedSpriteRenderer _spriteRendererRight;
+    private AnimatedSpriteRenderer _activeSpriteRenderer;
+
+    #region Keys
     [HideInInspector] public KeyCode _upKey;
     [HideInInspector] public KeyCode _downKey;
     [HideInInspector] public KeyCode _leftKey;
     [HideInInspector] public KeyCode _rightKey;
     [HideInInspector] public KeyCode _bombKey;
+    #endregion
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _activeSpriteRenderer = _spriteRendererDown;
     }
 
     void FixedUpdate()
@@ -41,66 +51,66 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(KeyCode.W))
                 {
                     //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
                 }
                 else if (Input.GetKey(KeyCode.A))
                 {
                     //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
                 }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
                     //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
                     //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
                     //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
                 }
                 else if (Input.GetKey(KeyCode.RightArrow))
                 {
                     //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
                 }
                 break;
             case PlayerInput.Custom:
                 if (Input.GetKey(_upKey))
                 {
                     //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
                 }
                 else if (Input.GetKey(_downKey))
                 {
                     //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
                 }
                 else if (Input.GetKey(_leftKey))
                 {
                     //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
                 }
                 else if (Input.GetKey(_rightKey))
                 {
                     //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb);
+                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
                 }
                 break;
             default:
@@ -138,12 +148,20 @@ public class PlayerController : MonoBehaviour
         }
         //Spawn bomb
     }
-    private void MoveCalculation(Vector3 direction, float moveSpeed, Vector3 position, Rigidbody2D rb)
+    private void MoveCalculation(Vector3 direction, float moveSpeed, Vector3 position, Rigidbody2D rb, AnimatedSpriteRenderer spriteRenderer)
     {
         Vector3 dir = direction * moveSpeed * Time.fixedDeltaTime;
         position = transform.position;
         Vector3 movement = position + dir;
         rb.MovePosition(movement);
+
+        _spriteRendererUp.enabled = spriteRenderer == _spriteRendererUp;
+        _spriteRendererDown.enabled = spriteRenderer == _spriteRendererDown;
+        _spriteRendererLeft.enabled = spriteRenderer == _spriteRendererLeft;
+        _spriteRendererRight.enabled = spriteRenderer == _spriteRendererRight;
+
+        _activeSpriteRenderer = spriteRenderer;
+        _activeSpriteRenderer._idle = direction == Vector3.zero;
     }
 }
 

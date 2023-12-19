@@ -64,6 +64,10 @@ MonoBehaviour:
   _playerName: 
   _moveSpeed: 20
   _bombPrefab: {fileID: 2495210326011220699, guid: 3b2d337c74c468c4e875e3b2349d7d42, type: 3}
+  _spriteRendererUp: {fileID: 0}
+  _spriteRendererDown: {fileID: 0}
+  _spriteRendererLeft: {fileID: 0}
+  _spriteRendererRight: {fileID: 0}
   _upKey: 0
   _downKey: 0
   _leftKey: 0
