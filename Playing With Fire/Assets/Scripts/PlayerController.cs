@@ -12,12 +12,9 @@ public enum PlayerInput
 public class PlayerController : MonoBehaviour
 {
     public PlayerInput _playerInput;
-    [SerializeField] string _playerName;
     [SerializeField] float _moveSpeed;
     Rigidbody2D _rb;
-
     BombController _bombController;
-
     [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererLeft;

@@ -15,7 +15,6 @@ public class Bomb : MonoBehaviour
     void OnDisable()
     {
         _isBlasted = true;
-        Debug.Log("Bomb is Disabled");
     }
 
     void Blast()
@@ -23,7 +22,7 @@ public class Bomb : MonoBehaviour
         //Destroy all breakable walls in blast radius
         Debug.Log("BOOM!");
         this.gameObject.SetActive(false);
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 1f);
     }
 
     private IEnumerator BlastCoroutine()

@@ -171,7 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerInput: 0
-  _playerName: 
   _moveSpeed: 5
   _spriteRendererUp: {fileID: 7708858325257759806}
   _spriteRendererDown: {fileID: 6173492015991107231}
@@ -197,6 +196,7 @@ MonoBehaviour:
   _bombPrefab: {fileID: 2495210326011220699, guid: 3b2d337c74c468c4e875e3b2349d7d42, type: 3}
   _bombFuzeTime: 3
   _bombAmount: 1
+  _bombRemaining: 0
 --- !u!50 &3211939079093903780
 Rigidbody2D:
   serializedVersion: 4
