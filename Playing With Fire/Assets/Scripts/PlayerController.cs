@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] PlayerInput _playerInput;
     [SerializeField] string _playerName;
     [SerializeField] float _moveSpeed;
-    [SerializeField] GameObject _bombPrefab;
+    [SerializeField] Bomb _bombPrefab;
     Rigidbody2D _rb;
 
     void Awake()
@@ -108,14 +108,14 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     //Spawn bomb
-                    Debug.Log("Spawn bomb");
+                    var bomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
                 }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKeyDown(KeyCode.Keypad0))
                 {
                     //Spawn bomb
-                    Debug.Log("Spawn bomb");
+                    var bomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
                 }
                 break;
             default:
