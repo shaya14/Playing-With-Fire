@@ -5,8 +5,21 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     [HideInInspector] public float _blastTime;
-    public bool _isBlasted = false; 
 
+    [Header("Explosion")]
+    [SerializeField] Explosion _explosionPrefab;
+    [SerializeField] float _explosionDuration;
+    [SerializeField] int _explosionRadius;
+
+    public LayerMask _explosionLayerMask;
+
+
+    BoxCollider2D _collider;
+    [HideInInspector] public bool _isBlasted = false;
+    void Awake()
+    {
+        _collider = GetComponent<BoxCollider2D>();
+    }
     void Start()
     {
         StartCoroutine(BlastCoroutine());
@@ -19,10 +32,17 @@ public class Bomb : MonoBehaviour
 
     void Blast()
     {
-        //Destroy all breakable walls in blast radius
-        Debug.Log("BOOM!");
+        //Destroy all breakable walls in blast radius    
         this.gameObject.SetActive(false);
         Destroy(gameObject, 1f);
+        var explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        explosion.SetActiveRenderer(explosion._spriteRendererStart);
+        explosion.DestroyAfter(_explosionDuration);
+
+        Explode(transform.position, Vector2.up, _explosionRadius);
+        Explode(transform.position, Vector2.down, _explosionRadius);
+        Explode(transform.position, Vector2.left, _explosionRadius);
+        Explode(transform.position, Vector2.right, _explosionRadius);
     }
 
     private IEnumerator BlastCoroutine()
@@ -30,5 +50,31 @@ public class Bomb : MonoBehaviour
         Debug.Log("Waiting for " + _blastTime + " seconds");
         yield return new WaitForSeconds(_blastTime);
         Blast();
+    }
+
+    private void Explode(Vector2 position , Vector2 direction , int lenght)
+    {
+        if(lenght <= 0){
+            return;
+        }
+
+        position += direction;
+
+        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _explosionLayerMask ))
+        {
+            return;
+        }
+
+        var explosion = Instantiate(_explosionPrefab, position, Quaternion.identity);
+        explosion.SetActiveRenderer(lenght > 1 ? explosion._spriteRendererMiddle : explosion._spriteRendererEnd);
+        explosion.SetDirection(direction);
+        explosion.DestroyAfter(_explosionDuration);
+
+        Explode(position, direction, lenght - 1);
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        _collider.isTrigger = false;
     }
 }

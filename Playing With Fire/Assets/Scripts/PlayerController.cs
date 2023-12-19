@@ -117,6 +117,7 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             default:
+                MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
                 break;
         }
     }

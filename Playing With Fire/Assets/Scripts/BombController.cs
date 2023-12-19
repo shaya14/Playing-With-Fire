@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
+    [Header("Bomb")]
     [SerializeField] Bomb _bombPrefab;
     [SerializeField] float _bombFuzeTime;
     [SerializeField] int _bombAmount;
@@ -35,10 +36,6 @@ public class BombController : MonoBehaviour
 
     private void InstantiateBomb()
     {
-        //Instantiate bomb at player position
-        //Set blast time
-        //Set blast radius
-        //Set bomb amount
         Vector2 position = transform.position;
         position.x = Mathf.Round(position.x);
         position.y = Mathf.Round(position.y);
@@ -50,8 +47,6 @@ public class BombController : MonoBehaviour
 
     public void PlaceBomb()
     {
-        //Check if player has bombs left
-        //If so, instantiate bomb
         if (_bombRemaining > 0)
         {
             InstantiateBomb();
