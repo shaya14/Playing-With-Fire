@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    [SerializeField] float _blastTime;
-    // Start is called before the first frame update
+    [HideInInspector] public float _blastTime;
+    public bool _isBlasted = false; 
+
     void Start()
     {
         StartCoroutine(BlastCoroutine());
+    }
+
+    void OnDisable()
+    {
+        _isBlasted = true;
+        Debug.Log("Bomb is Disabled");
     }
 
     void Blast()
     {
         //Destroy all breakable walls in blast radius
         Debug.Log("BOOM!");
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
+        Destroy(gameObject, 3f);
     }
 
     private IEnumerator BlastCoroutine()

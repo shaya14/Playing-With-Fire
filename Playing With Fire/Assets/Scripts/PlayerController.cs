@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour
     public PlayerInput _playerInput;
     [SerializeField] string _playerName;
     [SerializeField] float _moveSpeed;
-    [SerializeField] Bomb _bombPrefab;
     Rigidbody2D _rb;
+
+    BombController _bombController;
 
     [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
@@ -34,12 +35,17 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _bombController = GetComponent<BombController>();
         _activeSpriteRenderer = _spriteRendererDown;
     }
 
     void FixedUpdate()
     {
         Movement();
+    }
+
+    void Update()
+    {
         SpawnBomb();
     }
 
@@ -126,21 +132,21 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     //Spawn bomb
-                    var bomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
+                    _bombController.PlaceBomb();
                 }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKeyDown(KeyCode.Keypad0))
                 {
                     //Spawn bomb
-                    var bomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
+                    _bombController.PlaceBomb();
                 }
                 break;
             case PlayerInput.Custom:
                 if (Input.GetKeyDown(_bombKey))
                 {
                     //Spawn bomb
-                    var bomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
+                    _bombController.PlaceBomb();
                 }
                 break;
             default:
