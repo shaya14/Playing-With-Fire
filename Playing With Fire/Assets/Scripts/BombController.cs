@@ -12,8 +12,6 @@ public class BombController : MonoBehaviour
 
     private int _bombRemaining;
 
-    // CR: [discuss] should probably be a list 
-    private Bomb _currentBomb;
     void Awake()
     {
         _bombRemaining = _maxBombAmount;
@@ -21,15 +19,10 @@ public class BombController : MonoBehaviour
 
     void Update()
     {
-        if (_currentBomb != null)
-        {
-            if (_currentBomb._isBlasted)
-            {
-                Debug.Log("Bomb is blasted");
-                _bombRemaining++;
-                _currentBomb = null;
-            }
-        }
+    }
+
+    public void OnBombExploded() {
+        _bombRemaining++;
     }
 
     private void InstantiateBomb()
@@ -39,7 +32,6 @@ public class BombController : MonoBehaviour
         position.y = Mathf.Round(position.y);
 
         var bomb = Instantiate(_bombPrefab, position, Quaternion.identity);
-        _currentBomb = bomb;
     }
 
     public void PlaceBomb()

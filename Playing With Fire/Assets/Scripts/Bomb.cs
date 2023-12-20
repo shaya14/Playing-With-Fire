@@ -18,14 +18,18 @@ public class Bomb : MonoBehaviour
 
     public LayerMask _explosionLayerMask;
 
-    // CR: private
-    BoxCollider2D _collider;
-    // CR: [discuss] how to remove state.
-    [HideInInspector] public bool _isBlasted = false;
+    private BoxCollider2D _collider;
+    private BombController _bombContoller;
+    
     void Awake()
     {
         _collider = GetComponent<BoxCollider2D>();
     }
+
+    void Init(BombController bombController) {
+        _bombContoller = bombController;
+    }
+
     void Start()
     {
         StartCoroutine(BlastCoroutine());
@@ -33,14 +37,10 @@ public class Bomb : MonoBehaviour
 
     void OnDisable()
     {
-        _isBlasted = true;
     }
 
     void Blast()
     {
-        //Destroy all breakable walls in blast radius    
-        this.gameObject.SetActive(false);
-        Destroy(gameObject, 1f);
         var explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
         explosion.SetActiveRenderer(explosion._spriteRendererStart);
         explosion.DestroyAfter(_explosionDuration);
@@ -49,6 +49,16 @@ public class Bomb : MonoBehaviour
         Explode(transform.position, Vector2.down, _explosionRadius);
         Explode(transform.position, Vector2.left, _explosionRadius);
         Explode(transform.position, Vector2.right, _explosionRadius);
+        //Destroy all breakable walls in blast radius    
+        
+        // In case the player died meanwhile.
+        if (_bombContoller != null) {
+            _bombContoller.OnBombExploded();
+        }
+        
+        
+        Destroy(gameObject);
+       
     }
 
     private IEnumerator BlastCoroutine()
