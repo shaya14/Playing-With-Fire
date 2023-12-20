@@ -13,41 +13,33 @@ public enum PlayerInput
 // CR: no need for 'filler' words like 'Controller'. Just name the class 'Player'.
 public class PlayerController : MonoBehaviour
 {
-    // CR: [SerializeField] private PlayerInput _playerInput;
-    //     public PlayerInput playerInput => _playerInput;
-
-    public PlayerInput _playerInput;
-    // CR: [SerializeField] private float _moveSpeed;
-    //     Same everywhere.
-    [SerializeField] float _moveSpeed;
+    [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private float _moveSpeed;
     
-    // CR: No shortening! '_rigidBody', not '_rb'.
-    // CR: What about 'private'? :)
-    //       private RigidBody2D _rb;
-    //     Same everywhere.
-    Rigidbody2D _rb;
-    BombController _bombController;
+    private Rigidbody2D _rigidBody;
+    private BombController _bombController;
 
     #region SpriteRenderers
-    // CR: [SerializeField] private ...
-    [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
-    [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
-    [SerializeField] AnimatedSpriteRenderer _spriteRendererLeft;
-    [SerializeField] AnimatedSpriteRenderer _spriteRendererRight;
-    public AnimatedSpriteRenderer _activeSpriteRenderer;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererUp;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererDown;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererLeft;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererRight;
+    private AnimatedSpriteRenderer _activeSpriteRenderer;
     #endregion
 
     #region Keys
-    [HideInInspector] public KeyCode _upKey;
-    [HideInInspector] public KeyCode _downKey;
-    [HideInInspector] public KeyCode _leftKey;
-    [HideInInspector] public KeyCode _rightKey;
-    [HideInInspector] public KeyCode _bombKey;
+    [HideInInspector] public KeyCode upKey;
+    [HideInInspector] public KeyCode downKey;
+    [HideInInspector] public KeyCode leftKey;
+    [HideInInspector] public KeyCode rightKey;
+    [HideInInspector] public KeyCode bombKey;
     #endregion
+
+    public PlayerInput playerInput => _playerInput;
 
     void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rigidBody = GetComponent<Rigidbody2D>();
         _bombController = GetComponent<BombController>();
         _activeSpriteRenderer = _spriteRendererDown;
     }
@@ -70,25 +62,19 @@ public class PlayerController : MonoBehaviour
             case PlayerInput.WASD:
                 if (Input.GetKey(KeyCode.W))
                 {
-                    // CR: remove these kinds of comments.
-                    //     MoveCalculation(Vector3.up, ...) is clear enough.
-                    //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
+                    MoveCalculation(Vector3.up, _spriteRendererUp);
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
+                    MoveCalculation(Vector3.down, _spriteRendererDown);
                 }
                 else if (Input.GetKey(KeyCode.A))
                 {
-                    //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
+                    MoveCalculation(Vector3.left, _spriteRendererLeft);
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
-                    //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
+                    MoveCalculation(Vector3.right, _spriteRendererRight);
                 }
                 else if (Input.anyKey == false)
                 {
@@ -98,23 +84,19 @@ public class PlayerController : MonoBehaviour
             case PlayerInput.ArrowKeys:
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
+                    MoveCalculation(Vector3.up, _spriteRendererUp);
                 }
                 else if (Input.GetKey(KeyCode.DownArrow))
                 {
-                    //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
+                    MoveCalculation(Vector3.down, _spriteRendererDown);
                 }
                 else if (Input.GetKey(KeyCode.LeftArrow))
                 {
-                    //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
+                    MoveCalculation(Vector3.left, _spriteRendererLeft);
                 }
                 else if (Input.GetKey(KeyCode.RightArrow))
                 {
-                    //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
+                    MoveCalculation(Vector3.right, _spriteRendererRight);
                 }
                 else if (Input.anyKey == false)
                 {
@@ -122,25 +104,21 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             case PlayerInput.Custom:
-                if (Input.GetKey(_upKey))
+                if (Input.GetKey(upKey))
                 {
-                    //Move Up
-                    MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
+                    MoveCalculation(Vector3.up, _spriteRendererUp);
                 }
-                else if (Input.GetKey(_downKey))
+                else if (Input.GetKey(downKey))
                 {
-                    //Move Down
-                    MoveCalculation(Vector3.down, _moveSpeed, transform.position, _rb, _spriteRendererDown);
+                    MoveCalculation(Vector3.down, _spriteRendererDown);
                 }
-                else if (Input.GetKey(_leftKey))
+                else if (Input.GetKey(leftKey))
                 {
-                    //Move Left
-                    MoveCalculation(Vector3.left, _moveSpeed, transform.position, _rb, _spriteRendererLeft);
+                    MoveCalculation(Vector3.left, _spriteRendererLeft);
                 }
-                else if (Input.GetKey(_rightKey))
+                else if (Input.GetKey(rightKey))
                 {
-                    //Move Right
-                    MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
+                    MoveCalculation(Vector3.right, _spriteRendererRight);
                 }
                 else if (Input.anyKey == false)
                 {
@@ -159,42 +137,31 @@ public class PlayerController : MonoBehaviour
             case PlayerInput.WASD:
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    // CR: remove these kind of comments - '_bombController.PlaceBomb()' is clear enough.
-                    //Spawn bomb
                     _bombController.PlaceBomb();
                 }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKeyDown(KeyCode.Keypad0))
                 {
-                    //Spawn bomb
                     _bombController.PlaceBomb();
                 }
                 break;
             case PlayerInput.Custom:
-                if (Input.GetKeyDown(_bombKey))
+                if (Input.GetKeyDown(bombKey))
                 {
-                    //Spawn bomb
                     _bombController.PlaceBomb();
                 }
                 break;
             default:
                 break;
         }
-        //Spawn bomb
     }
     
-    // CR: moveSpeed doesn't need to be a parameter (since it doesn't change).
-    //     Just access _moveSpeed directly.
-    //     Same with rb (just access _rigidBody directly).
-
-    private void MoveCalculation(Vector3 direction, float moveSpeed, Vector3 position, Rigidbody2D rb, AnimatedSpriteRenderer spriteRenderer)
+    private void MoveCalculation(Vector3 direction, AnimatedSpriteRenderer spriteRenderer)
     {
-        Vector3 dir = direction * moveSpeed * Time.fixedDeltaTime;
-        // CR: 'position' doesn't need to be a parameter to the function.
-        position = transform.position;
-        Vector3 movement = position + dir;
-        rb.MovePosition(movement);
+        Vector3 dir = direction * _moveSpeed * Time.fixedDeltaTime;
+        Vector3 movement = transform.position + dir;
+        _rigidBody.MovePosition(movement);
 
         _spriteRendererUp.enabled = spriteRenderer == _spriteRendererUp;
         _spriteRendererDown.enabled = spriteRenderer == _spriteRendererDown;
@@ -214,17 +181,17 @@ public class PlayerControllerEditor : Editor
         base.OnInspectorGUI();
         PlayerController playerController = (PlayerController)target;
 
-        if (playerController._playerInput == PlayerInput.Custom)
+        if (playerController.playerInput == PlayerInput.Custom)
         {
             EditorGUILayout.Space(); // Add some space to separate custom input fields from the rest
 
             EditorGUI.BeginChangeCheck();
 
-            playerController._upKey = (KeyCode)EditorGUILayout.EnumPopup("Up Key", playerController._upKey);
-            playerController._downKey = (KeyCode)EditorGUILayout.EnumPopup("Down Key", playerController._downKey);
-            playerController._leftKey = (KeyCode)EditorGUILayout.EnumPopup("Left Key", playerController._leftKey);
-            playerController._rightKey = (KeyCode)EditorGUILayout.EnumPopup("Right Key", playerController._rightKey);
-            playerController._bombKey = (KeyCode)EditorGUILayout.EnumPopup("Bomb Key", playerController._bombKey);
+            playerController.upKey = (KeyCode)EditorGUILayout.EnumPopup("Up Key", playerController.upKey);
+            playerController.downKey = (KeyCode)EditorGUILayout.EnumPopup("Down Key", playerController.downKey);
+            playerController.leftKey = (KeyCode)EditorGUILayout.EnumPopup("Left Key", playerController.leftKey);
+            playerController.rightKey = (KeyCode)EditorGUILayout.EnumPopup("Right Key", playerController.rightKey);
+            playerController.bombKey = (KeyCode)EditorGUILayout.EnumPopup("Bomb Key", playerController.bombKey);
 
             if (EditorGUI.EndChangeCheck())
             {
