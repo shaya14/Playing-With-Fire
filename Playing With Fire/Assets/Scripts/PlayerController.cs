@@ -15,11 +15,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _moveSpeed;
     Rigidbody2D _rb;
     BombController _bombController;
+
+    #region SpriteRenderers
     [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererLeft;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererRight;
-    private AnimatedSpriteRenderer _activeSpriteRenderer;
+    public AnimatedSpriteRenderer _activeSpriteRenderer;
+    #endregion
 
     #region Keys
     [HideInInspector] public KeyCode _upKey;
@@ -39,6 +42,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
+
     }
 
     void Update()
@@ -71,6 +75,10 @@ public class PlayerController : MonoBehaviour
                     //Move Right
                     MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
                 }
+                else if (Input.anyKey == false)
+                {
+                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
+                }
                 break;
             case PlayerInput.ArrowKeys:
                 if (Input.GetKey(KeyCode.UpArrow))
@@ -92,6 +100,10 @@ public class PlayerController : MonoBehaviour
                 {
                     //Move Right
                     MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
+                }
+                else if (Input.anyKey == false)
+                {
+                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
                 }
                 break;
             case PlayerInput.Custom:
@@ -115,9 +127,12 @@ public class PlayerController : MonoBehaviour
                     //Move Right
                     MoveCalculation(Vector3.right, _moveSpeed, transform.position, _rb, _spriteRendererRight);
                 }
+                else if (Input.anyKey == false)
+                {
+                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
+                }
                 break;
             default:
-                MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
                 break;
         }
     }

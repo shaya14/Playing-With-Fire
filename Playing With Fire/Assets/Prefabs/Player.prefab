@@ -176,6 +176,7 @@ MonoBehaviour:
   _spriteRendererDown: {fileID: 6173492015991107231}
   _spriteRendererLeft: {fileID: 5029467683763086324}
   _spriteRendererRight: {fileID: 6251710661533288745}
+  _activeSpriteRenderer: {fileID: 0}
   _upKey: 264
   _downKey: 261
   _leftKey: 260
