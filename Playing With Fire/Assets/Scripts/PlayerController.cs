@@ -9,14 +9,27 @@ public enum PlayerInput
     ArrowKeys,
     Custom
 }
+
+// CR: no need for 'filler' words like 'Controller'. Just name the class 'Player'.
 public class PlayerController : MonoBehaviour
 {
+    // CR: [SerializeField] private PlayerInput _playerInput;
+    //     public PlayerInput playerInput => _playerInput;
+
     public PlayerInput _playerInput;
+    // CR: [SerializeField] private float _moveSpeed;
+    //     Same everywhere.
     [SerializeField] float _moveSpeed;
+    
+    // CR: No shortening! '_rigidBody', not '_rb'.
+    // CR: What about 'private'? :)
+    //       private RigidBody2D _rb;
+    //     Same everywhere.
     Rigidbody2D _rb;
     BombController _bombController;
 
     #region SpriteRenderers
+    // CR: [SerializeField] private ...
     [SerializeField] AnimatedSpriteRenderer _spriteRendererUp;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererDown;
     [SerializeField] AnimatedSpriteRenderer _spriteRendererLeft;
@@ -57,6 +70,8 @@ public class PlayerController : MonoBehaviour
             case PlayerInput.WASD:
                 if (Input.GetKey(KeyCode.W))
                 {
+                    // CR: remove these kinds of comments.
+                    //     MoveCalculation(Vector3.up, ...) is clear enough.
                     //Move Up
                     MoveCalculation(Vector3.up, _moveSpeed, transform.position, _rb, _spriteRendererUp);
                 }
@@ -144,6 +159,7 @@ public class PlayerController : MonoBehaviour
             case PlayerInput.WASD:
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
+                    // CR: remove these kind of comments - '_bombController.PlaceBomb()' is clear enough.
                     //Spawn bomb
                     _bombController.PlaceBomb();
                 }
@@ -167,9 +183,15 @@ public class PlayerController : MonoBehaviour
         }
         //Spawn bomb
     }
+    
+    // CR: moveSpeed doesn't need to be a parameter (since it doesn't change).
+    //     Just access _moveSpeed directly.
+    //     Same with rb (just access _rigidBody directly).
+
     private void MoveCalculation(Vector3 direction, float moveSpeed, Vector3 position, Rigidbody2D rb, AnimatedSpriteRenderer spriteRenderer)
     {
         Vector3 dir = direction * moveSpeed * Time.fixedDeltaTime;
+        // CR: 'position' doesn't need to be a parameter to the function.
         position = transform.position;
         Vector3 movement = position + dir;
         rb.MovePosition(movement);

@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
+    // CR: [SerializeField] private.
+    //     Set it in the bomb-prefab.
     [HideInInspector] public float _blastTime;
 
+    // CR: private..
     [Header("Explosion")]
     [SerializeField] Explosion _explosionPrefab;
+    
+    // CR: [discuss] can this be a property of 'Explosion' prefab instead?
     [SerializeField] float _explosionDuration;
+    
     [SerializeField] int _explosionRadius;
 
     public LayerMask _explosionLayerMask;
 
-
+    // CR: private
     BoxCollider2D _collider;
+    // CR: [discuss] how to remove state.
     [HideInInspector] public bool _isBlasted = false;
     void Awake()
     {
@@ -66,6 +73,7 @@ public class Bomb : MonoBehaviour
         }
 
         var explosion = Instantiate(_explosionPrefab, position, Quaternion.identity);
+        // CR: [discuss] Init pattern.
         explosion.SetActiveRenderer(lenght > 1 ? explosion._spriteRendererMiddle : explosion._spriteRendererEnd);
         explosion.SetDirection(direction);
         explosion.DestroyAfter(_explosionDuration);
