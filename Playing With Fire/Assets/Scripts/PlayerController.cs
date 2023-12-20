@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.anyKey == false)
                 {
-                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
+                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
                 }
                 break;
             case PlayerInput.ArrowKeys:
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.anyKey == false)
                 {
-                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
+                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
                 }
                 break;
             case PlayerInput.Custom:
@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (Input.anyKey == false)
                 {
-                    MoveCalculation(Vector3.zero, _moveSpeed, transform.position, _rb, _activeSpriteRenderer);
+                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
                 }
                 break;
             default:

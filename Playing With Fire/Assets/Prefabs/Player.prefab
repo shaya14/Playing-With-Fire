@@ -176,12 +176,11 @@ MonoBehaviour:
   _spriteRendererDown: {fileID: 6173492015991107231}
   _spriteRendererLeft: {fileID: 5029467683763086324}
   _spriteRendererRight: {fileID: 6251710661533288745}
-  _activeSpriteRenderer: {fileID: 0}
-  _upKey: 264
-  _downKey: 261
-  _leftKey: 260
-  _rightKey: 262
-  _bombKey: 271
+  upKey: 0
+  downKey: 0
+  leftKey: 0
+  rightKey: 0
+  bombKey: 0
 --- !u!114 &823981816028478993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,8 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bombPrefab: {fileID: 2495210326011220699, guid: 3b2d337c74c468c4e875e3b2349d7d42, type: 3}
-  _bombAmount: 1
-  _bombRemaining: 0
+  _maxBombAmount: 1
 --- !u!50 &3211939079093903780
 Rigidbody2D:
   serializedVersion: 4
