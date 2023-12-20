@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Bomb : MonoBehaviour
 {
-    // CR: [SerializeField] private.
-    //     Set it in the bomb-prefab.
-    [HideInInspector] public float _blastTime;
+    [SerializeField] private float _blastTime;
 
-    // CR: private..
     [Header("Explosion")]
-    [SerializeField] Explosion _explosionPrefab;
+    [SerializeField] private Explosion _explosionPrefab;
     
     // CR: [discuss] can this be a property of 'Explosion' prefab instead?
     [SerializeField] float _explosionDuration;
@@ -74,6 +73,7 @@ public class Bomb : MonoBehaviour
 
         var explosion = Instantiate(_explosionPrefab, position, Quaternion.identity);
         // CR: [discuss] Init pattern.
+        //               explosion.Init(activeRenderer, direction, duration);
         explosion.SetActiveRenderer(lenght > 1 ? explosion._spriteRendererMiddle : explosion._spriteRendererEnd);
         explosion.SetDirection(direction);
         explosion.DestroyAfter(_explosionDuration);

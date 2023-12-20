@@ -5,33 +5,20 @@ using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
-    // CR: private...
     [Header("Bomb")]
-    [SerializeField] Bomb _bombPrefab;
+    [SerializeField] private Bomb _bombPrefab;
 
-    // CR: remove. This is something that should just be in the prefab.
-    [SerializeField] float _bombFuzeTime;
-    
-    // CR: [nit] rename -> _maxBombAmount
-    [SerializeField] int _bombAmount;
+    [SerializeField] private int _maxBombAmount;
 
-    // CR: doesn't need to be 'SerializeField' (you set it in 'Awake').
-    [SerializeField] int _bombRemaining;
+    private int _bombRemaining;
 
     // CR: [discuss] should probably be a list 
     private Bomb _currentBomb;
     void Awake()
     {
-        _bombRemaining = _bombAmount;
+        _bombRemaining = _maxBombAmount;
     }
 
-    // CR: delete
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (_currentBomb != null)
@@ -52,7 +39,6 @@ public class BombController : MonoBehaviour
         position.y = Mathf.Round(position.y);
 
         var bomb = Instantiate(_bombPrefab, position, Quaternion.identity);
-        bomb._blastTime = _bombFuzeTime;
         _currentBomb = bomb;
     }
 
