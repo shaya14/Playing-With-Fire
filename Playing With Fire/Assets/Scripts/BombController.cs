@@ -7,9 +7,7 @@ public class BombController : MonoBehaviour
 {
     [Header("Bomb")]
     [SerializeField] private Bomb _bombPrefab;
-
     [SerializeField] private int _maxBombAmount;
-
     private int _bombRemaining;
 
     void Awake()
@@ -19,6 +17,7 @@ public class BombController : MonoBehaviour
 
     void Update()
     {
+
     }
 
     public void OnBombExploded() {
@@ -32,6 +31,7 @@ public class BombController : MonoBehaviour
         position.y = Mathf.Round(position.y);
 
         var bomb = Instantiate(_bombPrefab, position, Quaternion.identity);
+        bomb.Init(this);
     }
 
     public void PlaceBomb()

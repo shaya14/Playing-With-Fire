@@ -24,9 +24,10 @@ public class Bomb : MonoBehaviour
     void Awake()
     {
         _collider = GetComponent<BoxCollider2D>();
+        
     }
 
-    void Init(BombController bombController) {
+    public void Init(BombController bombController) {
         _bombContoller = bombController;
     }
 
