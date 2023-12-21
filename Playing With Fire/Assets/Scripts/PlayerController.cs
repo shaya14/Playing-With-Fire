@@ -15,15 +15,21 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private float _moveSpeed;
-    
+
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
 
     #region SpriteRenderers
-    [SerializeField] private AnimatedSpriteRenderer _spriteRendererUp;
-    [SerializeField] private AnimatedSpriteRenderer _spriteRendererDown;
-    [SerializeField] private AnimatedSpriteRenderer _spriteRendererLeft;
-    [SerializeField] private AnimatedSpriteRenderer _spriteRendererRight;
+    [HideInInspector] public bool showSpriteRenderers = true;
+
+    [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererUp;
+
+    [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererDown;
+
+    [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererLeft;
+
+    [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererRight;
+
     private AnimatedSpriteRenderer _activeSpriteRenderer;
     #endregion
 
@@ -57,73 +63,20 @@ public class PlayerController : MonoBehaviour
 
     void Movement()
     {
+        Vector3 direction = Vector3.zero;
         switch (_playerInput)
         {
             case PlayerInput.WASD:
-                if (Input.GetKey(KeyCode.W))
-                {
-                    MoveCalculation(Vector3.up, _spriteRendererUp);
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    MoveCalculation(Vector3.down, _spriteRendererDown);
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    MoveCalculation(Vector3.left, _spriteRendererLeft);
-                }
-                else if (Input.GetKey(KeyCode.D))
-                {
-                    MoveCalculation(Vector3.right, _spriteRendererRight);
-                }
-                else if (Input.anyKey == false)
-                {
-                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
-                }
+                direction = GetInputDirection(KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
+                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 break;
             case PlayerInput.ArrowKeys:
-                if (Input.GetKey(KeyCode.UpArrow))
-                {
-                    MoveCalculation(Vector3.up, _spriteRendererUp);
-                }
-                else if (Input.GetKey(KeyCode.DownArrow))
-                {
-                    MoveCalculation(Vector3.down, _spriteRendererDown);
-                }
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                {
-                    MoveCalculation(Vector3.left, _spriteRendererLeft);
-                }
-                else if (Input.GetKey(KeyCode.RightArrow))
-                {
-                    MoveCalculation(Vector3.right, _spriteRendererRight);
-                }
-                else if (Input.anyKey == false)
-                {
-                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
-                }
+                direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
+                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 break;
             case PlayerInput.Custom:
-                if (Input.GetKey(upKey))
-                {
-                    MoveCalculation(Vector3.up, _spriteRendererUp);
-                }
-                else if (Input.GetKey(downKey))
-                {
-                    MoveCalculation(Vector3.down, _spriteRendererDown);
-                }
-                else if (Input.GetKey(leftKey))
-                {
-                    MoveCalculation(Vector3.left, _spriteRendererLeft);
-                }
-                else if (Input.GetKey(rightKey))
-                {
-                    MoveCalculation(Vector3.right, _spriteRendererRight);
-                }
-                else if (Input.anyKey == false)
-                {
-                    MoveCalculation(Vector3.zero, _activeSpriteRenderer);
-                }
+                direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
+                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 break;
             default:
                 break;
@@ -156,7 +109,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    
+
     private void MoveCalculation(Vector3 direction, AnimatedSpriteRenderer spriteRenderer)
     {
         Vector3 dir = direction * _moveSpeed * Time.fixedDeltaTime;
@@ -171,6 +124,33 @@ public class PlayerController : MonoBehaviour
         _activeSpriteRenderer = spriteRenderer;
         _activeSpriteRenderer._idle = direction == Vector3.zero;
     }
+
+    AnimatedSpriteRenderer GetActiveSpriteRenderer(Vector3 direction)
+    {
+        if (direction == Vector3.up) return _spriteRendererUp;
+        if (direction == Vector3.down) return _spriteRendererDown;
+        if (direction == Vector3.left) return _spriteRendererLeft;
+        if (direction == Vector3.right) return _spriteRendererRight;
+
+        return _activeSpriteRenderer;
+    }
+
+    Vector3 GetInputDirection(KeyCode upKey, KeyCode downKey, KeyCode leftKey, KeyCode rightKey)
+    {
+        Vector3 direction = Vector3.zero;
+
+        if (Input.GetKey(upKey))
+            direction += Vector3.up;
+        else if (Input.GetKey(downKey))
+            direction += Vector3.down;
+
+        if (Input.GetKey(rightKey))
+            direction += Vector3.right;
+        else if (Input.GetKey(leftKey))
+            direction += Vector3.left;
+
+        return direction;
+    }
 }
 
 [CustomEditor(typeof(PlayerController))]
@@ -180,6 +160,10 @@ public class PlayerControllerEditor : Editor
     {
         base.OnInspectorGUI();
         PlayerController playerController = (PlayerController)target;
+
+        EditorGUILayout.Space();
+        playerController.showSpriteRenderers = EditorGUILayout.Toggle("Show Sprite Renderers", playerController.showSpriteRenderers);
+        EditorGUILayout.Space();
 
         if (playerController.playerInput == PlayerInput.Custom)
         {
@@ -193,10 +177,26 @@ public class PlayerControllerEditor : Editor
             playerController.rightKey = (KeyCode)EditorGUILayout.EnumPopup("Right Key", playerController.rightKey);
             playerController.bombKey = (KeyCode)EditorGUILayout.EnumPopup("Bomb Key", playerController.bombKey);
 
+            EditorGUILayout.Space();
+
             if (EditorGUI.EndChangeCheck())
             {
                 EditorUtility.SetDirty(playerController);
             }
         }
+
+        if (playerController.showSpriteRenderers)
+        {
+            // Draw the AnimatedSpriteRenderer fields
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererUp"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererDown"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererLeft"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererRight"));
+        }
+
+        // Apply any changes
+        serializedObject.ApplyModifiedProperties();
     }
+
+
 }
