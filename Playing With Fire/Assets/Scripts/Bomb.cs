@@ -8,13 +8,12 @@ using UnityEngine.Tilemaps;
 public class Bomb : MonoBehaviour
 {
     private float _blastTime = 3;
-    private BoxCollider2D _collider;
+    private CircleCollider2D _collider;
     private BombController _bombContoller;
     
     void Awake()
     {
-        _collider = GetComponent<BoxCollider2D>();
-        
+        _collider = GetComponent<CircleCollider2D>();       
     }
 
     public void Init(BombController bombController) {

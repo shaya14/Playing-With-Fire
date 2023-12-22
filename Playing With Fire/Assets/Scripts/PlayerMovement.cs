@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
+    private float _timer;
+    private bool _isBlinking = false;
+    private Damageable _damageable;
 
     #region SpriteRenderers
     [HideInInspector] public bool showSpriteRenderers = true;
@@ -40,11 +44,13 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     public PlayerInput playerInput => _playerInput;
+    public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
 
     void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _bombController = GetComponent<BombController>();
+        _damageable = GetComponent<Damageable>();
         _activeSpriteRenderer = _spriteRendererDown;
     }
 
@@ -57,8 +63,11 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         SpawnBomb();
+        if (_isBlinking)
+        {
+            _timer += Time.deltaTime;
+        }
     }
-
     void Movement()
     {
         Vector3 direction = Vector3.zero;
@@ -151,6 +160,64 @@ public class PlayerMovement : MonoBehaviour
             direction += Vector3.left;
 
         return direction;
+    }
+
+    public void RendererBlink()
+    {
+        StartCoroutine(Blink());
+    }
+    public void GhostCoroutine()
+    {
+        StartCoroutine(GhostUpAndDisappear());
+    }
+
+    private IEnumerator Blink()
+    {
+        _timer = 0;
+        _isBlinking = true;
+        _damageable.SetInvulnerable(true);
+
+        while (_timer < 3)
+        {
+            _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
+            yield return new WaitForSeconds(0.1f);
+            _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.6f);
+            yield return new WaitForSeconds(0.1f);
+            _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.4f);
+            yield return new WaitForSeconds(0.1f);
+            _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        _damageable.SetInvulnerable(false);
+        _isBlinking = false;
+
+        _spriteRendererUp.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        _spriteRendererDown.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        _spriteRendererLeft.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        _spriteRendererRight.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+    }
+
+    private IEnumerator GhostUpAndDisappear()
+    {
+
+        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
+        transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.6f);
+        transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.4f);
+        transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
+        transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0f);
+        transform.position += Vector3.up * 0.2f;
+        yield return new WaitForSeconds(0.2f);
+
+        Destroy(gameObject);
     }
 }
 

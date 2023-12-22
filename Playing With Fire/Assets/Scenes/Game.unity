@@ -2370,16 +2370,8 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 583464836863326467, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: m_SortAtRoot
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1084392263301331954, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1084392263301331954, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4430984303995279893, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
@@ -2424,22 +2416,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4430984303995279893, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5029467683763086324, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: _idleSprite
-      value: 
-      objectReference: {fileID: -708449999, guid: 1b4081508c41fae41927c6389af2e1e0, type: 3}
-    - target: {fileID: 6251710661533288745, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: _idleSprite
-      value: 
-      objectReference: {fileID: -1887437366, guid: 1b4081508c41fae41927c6389af2e1e0, type: 3}
-    - target: {fileID: 7708858325257759806, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: _idleSprite
-      value: 
-      objectReference: {fileID: -181397450, guid: 1b4081508c41fae41927c6389af2e1e0, type: 3}
-    - target: {fileID: 8849452990317785334, guid: 09187336d14ba684b959cb8090043b4b, type: 3}
-      propertyPath: _playerInput
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

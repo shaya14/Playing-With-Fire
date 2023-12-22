@@ -29,4 +29,12 @@ public class Explosion : MonoBehaviour
     {
         Destroy(gameObject, time);
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<Damageable>().TakeDamage(1);
+        }
+    }
 }
