@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class BombController : MonoBehaviour
 {
@@ -9,15 +10,14 @@ public class BombController : MonoBehaviour
     [SerializeField] private Bomb _bombPrefab;
     [SerializeField] private int _maxBombAmount;
     private int _bombRemaining;
+    
+    [SerializeField] Destructable _destructablePrefab;
+    [SerializeField] private Tilemap _destructableTile;
+
 
     void Awake()
     {
         _bombRemaining = _maxBombAmount;
-    }
-
-    void Update()
-    {
-
     }
 
     public void OnBombExploded() {

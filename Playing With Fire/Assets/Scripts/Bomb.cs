@@ -36,10 +36,6 @@ public class Bomb : MonoBehaviour
         StartCoroutine(BlastCoroutine());
     }
 
-    void OnDisable()
-    {
-    }
-
     void Blast()
     {
         var explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
