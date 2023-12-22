@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInput: 0
   _moveSpeed: 5
-  showSpriteRenderers: 1
+  showSpriteRenderers: 0
   _spriteRendererUp: {fileID: 7708858325257759806}
   _spriteRendererDown: {fileID: 6173492015991107231}
   _spriteRendererLeft: {fileID: 5029467683763086324}
@@ -195,7 +195,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bombPrefab: {fileID: 2495210326011220699, guid: 3b2d337c74c468c4e875e3b2349d7d42, type: 3}
-  _maxBombAmount: 1
+  _maxBombAmount: 2
+  _explosionPrefab: {fileID: -3230735608115727876, guid: 2419659d12c1d7743868693472c3110f, type: 3}
+  _explosionDuration: 1
+  _explosionRadius: 1
+  _explosionLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _destructablePrefab: {fileID: 2436196838934051208, guid: f4afe596f55c621448f6a23a1774256e, type: 3}
+  _destructableTile: {fileID: 0}
 --- !u!50 &3211939079093903780
 Rigidbody2D:
   serializedVersion: 4

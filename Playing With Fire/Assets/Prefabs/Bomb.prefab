@@ -59,13 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a36856c317c7dd4286bd92adad01fbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blastTime: 3
-  _explosionPrefab: {fileID: -3230735608115727876, guid: 2419659d12c1d7743868693472c3110f, type: 3}
-  _explosionDuration: 1
-  _explosionRadius: 2
-  _explosionLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!61 &-6489244461160618604
 BoxCollider2D:
   m_ObjectHideFlags: 0

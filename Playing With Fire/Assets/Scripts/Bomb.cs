@@ -3,21 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Tilemaps;
 
 public class Bomb : MonoBehaviour
 {
-    [SerializeField] private float _blastTime;
-
-    [Header("Explosion")]
-    [SerializeField] private Explosion _explosionPrefab;
-    
-    // CR: [discuss] can this be a property of 'Explosion' prefab instead?
-    [SerializeField] float _explosionDuration;
-    
-    [SerializeField] int _explosionRadius;
-
-    public LayerMask _explosionLayerMask;
-
+    private float _blastTime = 3;
     private BoxCollider2D _collider;
     private BombController _bombContoller;
     
@@ -38,14 +28,14 @@ public class Bomb : MonoBehaviour
 
     void Blast()
     {
-        var explosion = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+        var explosion = Instantiate(_bombContoller.ExplosionPrefab, transform.position, Quaternion.identity);
         explosion.SetActiveRenderer(explosion._spriteRendererStart);
-        explosion.DestroyAfter(_explosionDuration);
+        explosion.DestroyAfter(_bombContoller.ExplosionDuration);
 
-        Explode(transform.position, Vector2.up, _explosionRadius);
-        Explode(transform.position, Vector2.down, _explosionRadius);
-        Explode(transform.position, Vector2.left, _explosionRadius);
-        Explode(transform.position, Vector2.right, _explosionRadius);
+        Explode(transform.position, Vector2.up, _bombContoller.ExplosionRadius);
+        Explode(transform.position, Vector2.down, _bombContoller.ExplosionRadius);
+        Explode(transform.position, Vector2.left, _bombContoller.ExplosionRadius);
+        Explode(transform.position, Vector2.right, _bombContoller.ExplosionRadius);
         //Destroy all breakable walls in blast radius    
         
         // In case the player died meanwhile.
@@ -73,19 +63,32 @@ public class Bomb : MonoBehaviour
 
         position += direction;
 
-        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _explosionLayerMask ))
+        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _bombContoller.ExplosionLayerMask ))
         {
+            ClearDestructable(position);
             return;
         }
 
-        var explosion = Instantiate(_explosionPrefab, position, Quaternion.identity);
+        var explosion = Instantiate(_bombContoller.ExplosionPrefab, position, Quaternion.identity);
         // CR: [discuss] Init pattern.
         //               explosion.Init(activeRenderer, direction, duration);
         explosion.SetActiveRenderer(lenght > 1 ? explosion._spriteRendererMiddle : explosion._spriteRendererEnd);
         explosion.SetDirection(direction);
-        explosion.DestroyAfter(_explosionDuration);
+        explosion.DestroyAfter(_bombContoller.ExplosionDuration);
 
         Explode(position, direction, lenght - 1);
+    }
+
+    private void ClearDestructable(Vector2 position)
+    {
+        Vector3Int cell = _bombContoller.DestructableTile.WorldToCell(position);
+        TileBase tile = _bombContoller.DestructableTile.GetTile(cell);
+
+        if(tile != null)
+        {
+            Instantiate(_bombContoller.DestructablePrefab, position, Quaternion.identity);
+            _bombContoller.DestructableTile.SetTile(cell, null);
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
