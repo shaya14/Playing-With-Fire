@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private float _moveSpeed;
-
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
 
