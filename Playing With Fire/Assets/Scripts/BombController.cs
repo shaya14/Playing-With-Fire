@@ -19,13 +19,11 @@ public class BombController : MonoBehaviour
 
     [Header("Destructable")]
     [SerializeField] Destructable _destructablePrefab;
-    public Tilemap _destructableTile;
-
+    private Tilemap _destructableTile;
     public Explosion ExplosionPrefab => _explosionPrefab;
     public float ExplosionDuration => _explosionDuration;
     public int ExplosionRadius => _explosionRadius;
     public LayerMask ExplosionLayerMask => _explosionLayerMask;
-
     public Destructable DestructablePrefab => _destructablePrefab;
     public Tilemap DestructableTile => _destructableTile;
 
@@ -58,5 +56,16 @@ public class BombController : MonoBehaviour
             InstantiateBomb();
             _bombRemaining--;
         }
+    }
+
+    public void AddBomb()
+    {
+        _maxBombAmount++;
+        _bombRemaining = _maxBombAmount;
+    }
+
+    public void AddExplosionRadius()
+    {
+        _explosionRadius++;
     }
 }

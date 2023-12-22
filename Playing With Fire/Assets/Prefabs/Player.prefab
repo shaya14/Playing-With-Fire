@@ -203,7 +203,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _destructablePrefab: {fileID: 2436196838934051208, guid: f4afe596f55c621448f6a23a1774256e, type: 3}
-  _destructableTile: {fileID: 0}
 --- !u!50 &3211939079093903780
 Rigidbody2D:
   serializedVersion: 4

@@ -10,8 +10,7 @@ public enum PlayerInput
     Custom
 }
 
-// CR: no need for 'filler' words like 'Controller'. Just name the class 'Player'.
-public class PlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private float _moveSpeed;
@@ -108,7 +107,10 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-
+    public void AddSpeed(float speed)
+    {
+        _moveSpeed += speed;
+    }
     private void MoveCalculation(Vector3 direction, AnimatedSpriteRenderer spriteRenderer)
     {
         Vector3 dir = direction * _moveSpeed * Time.fixedDeltaTime;
@@ -152,13 +154,13 @@ public class PlayerController : MonoBehaviour
     }
 }
 
-[CustomEditor(typeof(PlayerController))]
-public class PlayerControllerEditor : Editor
+[CustomEditor(typeof(PlayerMovement))]
+public class PlayerMovementEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        PlayerController playerController = (PlayerController)target;
+        PlayerMovement playerController = (PlayerMovement)target;
 
         EditorGUILayout.Space();
         playerController.showSpriteRenderers = EditorGUILayout.Toggle("Show Sprite Renderers", playerController.showSpriteRenderers);
