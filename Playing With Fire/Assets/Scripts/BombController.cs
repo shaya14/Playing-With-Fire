@@ -20,13 +20,13 @@ public class BombController : MonoBehaviour
     [Header("Destructable")]
     [SerializeField] Destructable _destructablePrefab;
     private Tilemap _destructableTile;
+    private bool _isBombPlacedHere = false;
     public Explosion ExplosionPrefab => _explosionPrefab;
     public float ExplosionDuration => _explosionDuration;
     public int ExplosionRadius => _explosionRadius;
     public LayerMask ExplosionLayerMask => _explosionLayerMask;
     public Destructable DestructablePrefab => _destructablePrefab;
     public Tilemap DestructableTile => _destructableTile;
-
 
     void Awake()
     {
@@ -51,7 +51,7 @@ public class BombController : MonoBehaviour
 
     public void PlaceBomb()
     {
-        if (_bombRemaining > 0)
+        if (_bombRemaining > 0 && !_isBombPlacedHere)
         {
             InstantiateBomb();
             _bombRemaining--;
@@ -67,5 +67,10 @@ public class BombController : MonoBehaviour
     public void AddExplosionRadius()
     {
         _explosionRadius++;
+    }
+
+    public void BombIsPlacedHere(bool isPlaced)
+    {
+        _isBombPlacedHere = isPlaced;
     }
 }

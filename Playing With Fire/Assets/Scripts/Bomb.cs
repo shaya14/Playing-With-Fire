@@ -89,9 +89,14 @@ public class Bomb : MonoBehaviour
             _bombContoller.DestructableTile.SetTile(cell, null);
         }
     }
+    void OnTriggerStay2D(Collider2D other)
+    {
+        _bombContoller.BombIsPlacedHere(true);
+    }
 
     void OnTriggerExit2D(Collider2D other)
     {
         _collider.isTrigger = false;
+        _bombContoller.BombIsPlacedHere(false);
     }
 }
