@@ -23,6 +23,7 @@ public class Damageable : MonoBehaviour
 
             InstantiateGhost();
             _playerMovement.RendererBlink();
+            GameManager.Instance.DecreceLives();
             if (_currentHealth <= 0)
             {
                 Die();
