@@ -21,17 +21,28 @@ public class BombController : MonoBehaviour
     [SerializeField] Destructable _destructablePrefab;
     private Tilemap _destructableTile;
     private bool _isBombPlacedHere = false;
+    private PlayerUiHandler _playerUiHandler;
     public Explosion ExplosionPrefab => _explosionPrefab;
     public float ExplosionDuration => _explosionDuration;
     public int ExplosionRadius => _explosionRadius;
     public LayerMask ExplosionLayerMask => _explosionLayerMask;
     public Destructable DestructablePrefab => _destructablePrefab;
     public Tilemap DestructableTile => _destructableTile;
+    public int NumOfBombs => _maxBombAmount;
+
+    
 
     void Awake()
     {
+        _playerUiHandler = GetComponent<PlayerUiHandler>();
         _bombRemaining = _maxBombAmount;
         _destructableTile = GameObject.FindGameObjectWithTag("Destructables").GetComponent<Tilemap>();
+    }
+
+    void Start()
+    {
+        _playerUiHandler.UpdateNumOfBombsText(_maxBombAmount);
+        _playerUiHandler.UpdateNumOfRadiusBoostsText(_explosionRadius);
     }
 
     public void OnBombExploded()

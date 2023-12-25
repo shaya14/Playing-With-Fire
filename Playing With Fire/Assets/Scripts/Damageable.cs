@@ -28,10 +28,11 @@ public class Damageable : MonoBehaviour
         if (!_isInvulnerable)
         {
             _currentHealth -= damage;
-
+            
             InstantiateGhost();
             _playerMovement.RendererBlink();
-            GameManager.Instance.DecreceLives();
+            _playerMovement.GetComponent<PlayerUiHandler>().DecreceLives();
+
             if (_currentHealth <= 0)
             {
                 Die();

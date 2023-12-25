@@ -14,12 +14,13 @@ public enum PlayerInput
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private PlayerInput _playerInput;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] private int _moveSpeed;
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
     private float _timer;
     private bool _isBlinking = false;
     private Damageable _damageable;
+    private PlayerUiHandler _playerUiHandler;
 
     #region SpriteRenderers
     [HideInInspector] public bool showSpriteRenderers = true;
@@ -45,12 +46,22 @@ public class PlayerMovement : MonoBehaviour
 
     public PlayerInput playerInput => _playerInput;
     public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
+    public int NumOfSpeedBoosts => _moveSpeed;
 
     void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _bombController = GetComponent<BombController>();
         _damageable = GetComponent<Damageable>();
+        _playerUiHandler = GetComponent<PlayerUiHandler>();
+    }
+
+    void Start()
+    {
+        if (_playerUiHandler != null)
+        {
+            _playerUiHandler.UpdateNumOfSpeedBoostsText(_moveSpeed);
+        }
     }
 
     void FixedUpdate()
@@ -151,7 +162,7 @@ public class PlayerMovement : MonoBehaviour
             _activeSpriteRenderer = _spriteRendererDown;
         }
     }
-    public void AddSpeed(float speed)
+    public void AddSpeed(int speed)
     {
         _moveSpeed += speed;
     }
@@ -205,7 +216,6 @@ public class PlayerMovement : MonoBehaviour
     {
         StartCoroutine(GhostUpAndDisappear());
     }
-
     private IEnumerator Blink()
     {
         _timer = 0;
@@ -232,7 +242,6 @@ public class PlayerMovement : MonoBehaviour
         _spriteRendererLeft.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
         _spriteRendererRight.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
     }
-
     private IEnumerator GhostUpAndDisappear()
     {
         _activeSpriteRenderer = _spriteRendererDown;

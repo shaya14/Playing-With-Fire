@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 public class ItemObject : MonoBehaviour
 { 
-    [HideInInspector] public float _speedBoostAmount;
+    [HideInInspector] public int _speedBoostAmount;
     public enum ItemType
     {
         ExtraBomb,
@@ -23,12 +23,18 @@ public class ItemObject : MonoBehaviour
             {
                 case ItemType.ExtraBomb:
                     collision.GetComponent<BombController>().AddBomb();
+                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfBombsText(collision.GetComponent<BombController>().NumOfBombs);
+                    //GameManager.Instance.UpdateNumOfBombsText(collision.GetComponent<BombController>().NumOfBombs);
                     break;
                 case ItemType.SpeedBoost:
                     collision.GetComponent<PlayerMovement>().AddSpeed(_speedBoostAmount);
+                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfSpeedBoostsText(collision.GetComponent<PlayerMovement>().NumOfSpeedBoosts);
+                    //GameManager.Instance.UpdateNumOfSpeedBoostsText(collision.GetComponent<PlayerMovement>().NumOfSpeedBoosts);
                     break;
                 case ItemType.ExplosionRadiusBoost:
                     collision.GetComponent<BombController>().AddExplosionRadius();
+                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfRadiusBoostsText(collision.GetComponent<BombController>().ExplosionRadius);
+                    //GameManager.Instance.UpdateNumOfRadiusBoostsText(collision.GetComponent<BombController>().ExplosionRadius);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -49,7 +55,7 @@ public class ItemObjectEditor : Editor
 
         if (itemObject._itemType == ItemObject.ItemType.SpeedBoost)
         {
-            itemObject._speedBoostAmount = EditorGUILayout.FloatField("Speed Boost Amount", itemObject._speedBoostAmount);
+            itemObject._speedBoostAmount = EditorGUILayout.IntField("Speed Boost Amount", itemObject._speedBoostAmount);
         }
     }
 }

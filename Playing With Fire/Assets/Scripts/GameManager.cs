@@ -4,29 +4,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    private static GameManager _instance;
+
+    public static GameManager Instance => _instance;
 
     void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
         else
         {
             Destroy(gameObject);
-        }
-    }
-
-    public void DecreceLives()
-    {
-        for (int i = 0; i < UiManager.Instance._lives.Length; i++)
-        {
-            if (UiManager.Instance._lives[i].activeSelf)
-            {
-                UiManager.Instance._lives[i].SetActive(false);
-                break;
-            }
         }
     }
 }

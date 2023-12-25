@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
-    public static UiManager Instance;
+    private static UiManager _instance;
 
-    public GameObject[] _lives;
-
+    public static UiManager Instance => _instance;
     void Awake()
     {
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
         }
         else
         {
             Destroy(gameObject);
-        }        
+        }
     }
 }
