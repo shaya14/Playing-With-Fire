@@ -12,9 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] string _playerName;
     [SerializeField] PlayerColor _playerColor;
     [SerializeField] GameObject[] _colors;
-    [SerializeField] PlayerMovement _ghostPrefab;
+    private PlayerMovement _ghostPrefab;
     public PlayerMovement GhostPrefab => _ghostPrefab;
-
     private PlayerMovement _playerMovement;
 
     void OnEnable()

@@ -9,7 +9,8 @@ public class Damageable : MonoBehaviour
     private int _currentHealth;
     private bool _isInvulnerable = false;
     private PlayerMovement _playerMovement;
-    [SerializeField]private Player _player;
+    private Player _player;
+    
     private void Awake()
     {
         _currentHealth = _maxHealth;

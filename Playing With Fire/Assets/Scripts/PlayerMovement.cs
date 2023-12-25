@@ -51,13 +51,11 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();
         _bombController = GetComponent<BombController>();
         _damageable = GetComponent<Damageable>();
-        //_activeSpriteRenderer = _spriteRendererDown;
     }
 
     void FixedUpdate()
     {
         Movement();
-
     }
 
     void Update()
