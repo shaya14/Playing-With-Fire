@@ -85,14 +85,23 @@ public class PlayerMovement : MonoBehaviour
             case PlayerInput.WASD:
                 direction = GetInputDirection(KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
+                _playerUiHandler.UpdateKeysText("W A S D");
                 break;
             case PlayerInput.ArrowKeys:
                 direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
+                _playerUiHandler.UpdateKeysText("↑ ↓ ← →");
                 break;
             case PlayerInput.Custom:
                 direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
+                _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
+                if(upKey == KeyCode.Keypad8 || downKey == KeyCode.Keypad5 || leftKey == KeyCode.Keypad4 || rightKey == KeyCode.Keypad6)
+                {
+                    Debug.Log("You can't use the numpad for custom input");
+                    //_playerUiHandler.Keytext.autoSizeTextContainer = true;
+                    _playerUiHandler.Keytext.rectTransform.sizeDelta = new Vector2(170, 190);
+                }
                 break;
             default:
                 break;

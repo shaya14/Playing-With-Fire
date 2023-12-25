@@ -389,6 +389,7 @@ MonoBehaviour:
   _numOfBombsText: {fileID: 0}
   _numOfSpeedBoostsText: {fileID: 0}
   _numOfRadiusBoostsText: {fileID: 0}
+  _keysText: {fileID: 0}
 --- !u!50 &3211939079093903780
 Rigidbody2D:
   serializedVersion: 4

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerUiHandler : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerUiHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _numOfBombsText;
     [SerializeField] private TextMeshProUGUI _numOfSpeedBoostsText;
     [SerializeField] private TextMeshProUGUI _numOfRadiusBoostsText;
+    [SerializeField] private TextMeshProUGUI _keysText;
+
+    public TextMeshProUGUI Keytext => _keysText;
 
     public void DecreceLives()
     {
@@ -42,5 +46,10 @@ public class PlayerUiHandler : MonoBehaviour
     public void UpdateNumOfRadiusBoostsText(int numOfRadiusBoosts)
     {
         _numOfRadiusBoostsText.text = numOfRadiusBoosts.ToString();
+    }
+
+    public void UpdateKeysText(string keys)
+    {
+        _keysText.text = keys;
     }
 }
