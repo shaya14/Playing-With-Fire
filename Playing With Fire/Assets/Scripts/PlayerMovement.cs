@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();
         _bombController = GetComponent<BombController>();
         _damageable = GetComponent<Damageable>();
-        _activeSpriteRenderer = _spriteRendererDown;
+        //_activeSpriteRenderer = _spriteRendererDown;
     }
 
     void FixedUpdate()
@@ -114,6 +114,43 @@ public class PlayerMovement : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+    public void GetRenderers()
+    {
+        AnimatedSpriteRenderer[] spriteRenderers = GetComponentsInChildren<AnimatedSpriteRenderer>();
+        foreach (AnimatedSpriteRenderer spriteRenderer in spriteRenderers)
+        {
+            if (spriteRenderer == null) continue;
+            if (spriteRenderer.name == "Up Sprite")
+            {
+                _spriteRendererUp = spriteRenderer;
+            }
+            else if (spriteRenderer.name == "Down Sprite")
+            {
+                _spriteRendererDown = spriteRenderer;
+            }
+            else if (spriteRenderer.name == "Left Sprite")
+            {
+                _spriteRendererLeft = spriteRenderer;
+            }
+            else if (spriteRenderer.name == "Right Sprite")
+            {
+                _spriteRendererRight = spriteRenderer;
+            }
+        }
+        SetActiveRendererByPosition(transform.position);
+    }
+
+    private void SetActiveRendererByPosition(Vector3 position)
+    {
+        if (position.y <= 0)
+        {
+            _activeSpriteRenderer = _spriteRendererUp;
+        }
+        else if (position.y >= 0)
+        {
+            _activeSpriteRenderer = _spriteRendererDown;
         }
     }
     public void AddSpeed(float speed)
@@ -200,7 +237,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator GhostUpAndDisappear()
     {
-
+        _activeSpriteRenderer = _spriteRendererDown;
         _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
         transform.position += Vector3.up * 0.25f;
         yield return new WaitForSeconds(0.25f);

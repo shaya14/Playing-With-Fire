@@ -9,10 +9,17 @@ public class Damageable : MonoBehaviour
     private int _currentHealth;
     private bool _isInvulnerable = false;
     private PlayerMovement _playerMovement;
+    [SerializeField]private Player _player;
     private void Awake()
     {
         _currentHealth = _maxHealth;
         _playerMovement = GetComponent<PlayerMovement>();
+        _player = GetComponent<Player>();
+    }
+
+    void Start()
+    {
+        _ghostPrefab = _player.GhostPrefab;
     }
 
     public void TakeDamage(int damage)
