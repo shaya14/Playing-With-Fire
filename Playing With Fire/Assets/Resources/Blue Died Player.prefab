@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4a348afcca9174180f006b64521440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInput: 2
+  _playerInput: 3
   _moveSpeed: 5
   showSpriteRenderers: 0
   _spriteRendererUp: {fileID: 7708858325257759806}

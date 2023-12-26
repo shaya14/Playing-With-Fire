@@ -168,13 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4a348afcca9174180f006b64521440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInput: 2
+  _playerInput: 3
   _moveSpeed: 5
   showSpriteRenderers: 0
   _spriteRendererUp: {fileID: 7708858325257759806}
   _spriteRendererDown: {fileID: 6173492015991107231}
   _spriteRendererLeft: {fileID: 5029467683763086324}
   _spriteRendererRight: {fileID: 6251710661533288745}
+  _spriteRendererDie: {fileID: 0}
   upKey: 0
   downKey: 0
   leftKey: 0

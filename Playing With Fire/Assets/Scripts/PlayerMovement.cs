@@ -8,7 +8,8 @@ public enum PlayerInput
 {
     WASD,
     ArrowKeys,
-    Custom
+    Custom,
+    None
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -17,10 +18,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int _moveSpeed;
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
-    private float _timer;
-    private bool _isBlinking = false;
     private Damageable _damageable;
     private PlayerUiHandler _playerUiHandler;
+    private float _timer;
+    private bool _isBlinking = false;
 
     #region SpriteRenderers
     [HideInInspector] public bool showSpriteRenderers = true;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererLeft;
 
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererRight;
+    [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererDie;
 
     private AnimatedSpriteRenderer _activeSpriteRenderer;
     #endregion
@@ -43,11 +45,6 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public KeyCode rightKey;
     [HideInInspector] public KeyCode bombKey;
     #endregion
-
-    public PlayerInput playerInput => _playerInput;
-    public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
-    public int NumOfSpeedBoosts => _moveSpeed;
-
     private List<KeyCode> numpadKeys = new List<KeyCode> {
     KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad4, KeyCode.Keypad6,
     KeyCode.Keypad7, KeyCode.Keypad2, KeyCode.Keypad1, KeyCode.Keypad3,
@@ -55,6 +52,12 @@ public class PlayerMovement : MonoBehaviour
     KeyCode.KeypadPlus, KeyCode.KeypadMinus, KeyCode.KeypadMultiply, KeyCode.KeypadDivide,
     KeyCode.KeypadPeriod, KeyCode.KeypadEnter, KeyCode.KeypadEquals, KeyCode.Keypad0
 };
+    public PlayerInput playerInput => _playerInput;
+    public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
+    public int NumOfSpeedBoosts => _moveSpeed;
+
+
+
 
     void Awake()
     {
@@ -69,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (_playerUiHandler != null)
         {
             _playerUiHandler.UpdateNumOfSpeedBoostsText(_moveSpeed);
+            _playerUiHandler.UpdateLives(_damageable.MaxHealth);
         }
     }
 
@@ -109,6 +113,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _playerUiHandler.Keytext.rectTransform.sizeDelta = new Vector2(200, 250);
                 }
+                break;
+            case PlayerInput.None:
+                direction = Vector3.zero;
+                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 break;
             default:
                 break;
@@ -163,6 +171,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 _spriteRendererRight = spriteRenderer;
             }
+            else if (spriteRenderer.name == "Die Sprite")
+            {
+                _spriteRendererDie = spriteRenderer;
+            }
         }
         SetActiveRendererByPosition(transform.position);
     }
@@ -194,7 +206,10 @@ public class PlayerMovement : MonoBehaviour
         _spriteRendererRight.enabled = spriteRenderer == _spriteRendererRight;
 
         _activeSpriteRenderer = spriteRenderer;
+
         _activeSpriteRenderer._idle = direction == Vector3.zero;
+
+
     }
 
     AnimatedSpriteRenderer GetActiveSpriteRenderer(Vector3 direction)
@@ -279,6 +294,26 @@ public class PlayerMovement : MonoBehaviour
 
         Destroy(gameObject);
     }
+
+    public void DeathSequence()
+    {
+        enabled = false;
+        GetComponent<BombController>().enabled = false;
+
+        _spriteRendererUp.enabled = false;
+        _spriteRendererDown.enabled = false;
+        _spriteRendererLeft.enabled = false;
+        _spriteRendererRight.enabled = false;
+
+        _spriteRendererDie.enabled = true;
+
+        Invoke(nameof(OnDeathSequenceFinished), 2f);
+    }
+
+    private void OnDeathSequenceFinished()
+    {
+        Destroy(gameObject);
+    }
 }
 
 [CustomEditor(typeof(PlayerMovement))]
@@ -320,6 +355,7 @@ public class PlayerMovementEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererDown"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererLeft"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererRight"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererDie"));
         }
 
         // Apply any changes

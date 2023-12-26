@@ -13,7 +13,6 @@ public class PlayerUiHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _numOfSpeedBoostsText;
     [SerializeField] private TextMeshProUGUI _numOfRadiusBoostsText;
     [SerializeField] private TextMeshProUGUI _keysText;
-
     public TextMeshProUGUI Keytext => _keysText;
 
     public void DecreceLives()
@@ -24,6 +23,21 @@ public class PlayerUiHandler : MonoBehaviour
             {
                 _playerLives[i].gameObject.SetActive(false);
                 break;
+            }
+        }
+    }
+
+    public void UpdateLives(int num)
+    {
+        for (int i = 0; i < _playerLives.Length; i++)
+        {
+            if (i < num)
+            {
+                _playerLives[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                _playerLives[i].gameObject.SetActive(false);
             }
         }
     }

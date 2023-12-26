@@ -6,11 +6,12 @@ public class Damageable : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
     [SerializeField] private PlayerMovement _ghostPrefab;
-    private int _currentHealth;
-    private bool _isInvulnerable = false;
     private PlayerMovement _playerMovement;
     private Player _player;
-    
+    private int _currentHealth;
+    private bool _isInvulnerable = false;
+    public int MaxHealth => _maxHealth;
+
     private void Awake()
     {
         _currentHealth = _maxHealth;
@@ -28,23 +29,17 @@ public class Damageable : MonoBehaviour
         if (!_isInvulnerable)
         {
             _currentHealth -= damage;
-            
+
             InstantiateGhost();
-            _playerMovement.RendererBlink();
             _playerMovement.GetComponent<PlayerUiHandler>().DecreceLives();
+            _playerMovement.RendererBlink();
 
             if (_currentHealth <= 0)
             {
-                Die();
+                _playerMovement.DeathSequence();
             }
         }
     }
-
-    public void Die()
-    {
-        Destroy(gameObject);
-    }
-
     private void InstantiateGhost()
     {
         var ghost = Instantiate(_ghostPrefab, transform.position, Quaternion.identity);
