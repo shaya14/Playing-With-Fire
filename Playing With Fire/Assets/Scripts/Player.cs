@@ -16,8 +16,9 @@ public class Player : MonoBehaviour
     public PlayerMovement GhostPrefab => _ghostPrefab;
     private PlayerMovement _playerMovement;
     public PlayerMovement _ghostPrefab;
-
+    public string PlayerName => _playerName;
     private PlayerUiHandler _playerUiHandler;
+
     void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
@@ -29,6 +30,12 @@ public class Player : MonoBehaviour
     void Start()
     {
         _playerUiHandler.UpdateNameText(_playerName);
+        GameManager.Instance.AddPlayer(this);
+    }
+
+    void OnDisable()
+    {
+        GameManager.Instance.RemovePlayer(this);
     }
 
     public void SetPlayerColor()

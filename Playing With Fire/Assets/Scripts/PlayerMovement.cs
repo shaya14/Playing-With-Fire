@@ -312,7 +312,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDeathSequenceFinished()
     {
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
     }
 }
 
