@@ -48,6 +48,14 @@ public class PlayerMovement : MonoBehaviour
     public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
     public int NumOfSpeedBoosts => _moveSpeed;
 
+    private List<KeyCode> numpadKeys = new List<KeyCode> {
+    KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad4, KeyCode.Keypad6,
+    KeyCode.Keypad7, KeyCode.Keypad2, KeyCode.Keypad1, KeyCode.Keypad3,
+    KeyCode.Keypad9, KeyCode.Keypad3, KeyCode.Keypad7, KeyCode.Keypad1,
+    KeyCode.KeypadPlus, KeyCode.KeypadMinus, KeyCode.KeypadMultiply, KeyCode.KeypadDivide,
+    KeyCode.KeypadPeriod, KeyCode.KeypadEnter, KeyCode.KeypadEquals, KeyCode.Keypad0
+};
+
     void Awake()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -91,16 +99,15 @@ public class PlayerMovement : MonoBehaviour
                 direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 _playerUiHandler.UpdateKeysText("↑ ↓ ← →");
+                _playerUiHandler.Keytext.fontSize = 42;
                 break;
             case PlayerInput.Custom:
                 direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
-                if(upKey == KeyCode.Keypad8 || downKey == KeyCode.Keypad5 || leftKey == KeyCode.Keypad4 || rightKey == KeyCode.Keypad6)
+                if (numpadKeys.Contains(upKey) || numpadKeys.Contains(downKey) || numpadKeys.Contains(leftKey) || numpadKeys.Contains(rightKey))
                 {
-                    Debug.Log("You can't use the numpad for custom input");
-                    //_playerUiHandler.Keytext.autoSizeTextContainer = true;
-                    _playerUiHandler.Keytext.rectTransform.sizeDelta = new Vector2(170, 190);
+                    _playerUiHandler.Keytext.rectTransform.sizeDelta = new Vector2(200, 250);
                 }
                 break;
             default:
