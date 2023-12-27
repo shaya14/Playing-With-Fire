@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,7 +34,9 @@ public class GameManager : MonoBehaviour
             foreach (var player in _players)
             {
                 UiManager.Instance.WinnerNameText.text = player.PlayerName;
+                player.GetComponent<PlayerMovement>().enabled = false;
             }
+
             UiManager.Instance.WinScreen.SetActive(true);
         }
     }
@@ -68,5 +72,14 @@ public class GameManager : MonoBehaviour
 
         if (_secondPlace != null)
             UiManager.Instance.SecondPlaceNameText.text = _secondPlace.PlayerName;
+    }
+
+    public void RestartGame()
+    {
+        _fourthPlace = null;
+        _thirdPlace = null;
+        _secondPlace = null;
+        UiManager.Instance.WinScreen.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
