@@ -8,14 +8,16 @@ using UnityEngine.UI;
 public class UiManager : MonoBehaviour
 {
     private static UiManager _instance;
-    [SerializeField] private GameObject _winScreen;         
+    [SerializeField] private GameObject _winScreen;
+    [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private TextMeshProUGUI _winnerNameText;
     [SerializeField] private TextMeshProUGUI _secondPlaceNameText;
     [SerializeField] private TextMeshProUGUI _thirdPlaceNameText;
     [SerializeField] private TextMeshProUGUI _fourthPlaceNameText;
 
     public static UiManager Instance => _instance;
-    public GameObject WinScreen => _winScreen;  
+    public GameObject WinScreen => _winScreen;
+    public GameObject PauseMenu => _pauseMenu;
     public TextMeshProUGUI WinnerNameText => _winnerNameText;
     public TextMeshProUGUI SecondPlaceNameText => _secondPlaceNameText;
     public TextMeshProUGUI ThirdPlaceNameText => _thirdPlaceNameText;

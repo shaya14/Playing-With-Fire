@@ -39,6 +39,11 @@ public class GameManager : MonoBehaviour
 
             UiManager.Instance.WinScreen.SetActive(true);
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseMenu();
+        }
     }
     public void AddPlayer(Player player)
     {
@@ -74,12 +79,25 @@ public class GameManager : MonoBehaviour
             UiManager.Instance.SecondPlaceNameText.text = _secondPlace.PlayerName;
     }
 
-    public void RestartGame()
+    public void RestartLevel()
     {
+        Time.timeScale = 1;
         _fourthPlace = null;
         _thirdPlace = null;
         _secondPlace = null;
         UiManager.Instance.WinScreen.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ResumeGame()
+    {
+        UiManager.Instance.PauseMenu.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    private void PauseMenu()
+    {
+        UiManager.Instance.PauseMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 }
