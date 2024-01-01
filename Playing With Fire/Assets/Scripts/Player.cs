@@ -11,13 +11,15 @@ enum PlayerColor
 public class Player : MonoBehaviour
 {
     [SerializeField] string _playerName;
-    [SerializeField] PlayerColor _playerColor;
+    [SerializeField] private PlayerColor _playerColor;
     [SerializeField] private PlayerMovement _ghostPrefab;
-    [SerializeField] GameObject[] _colors;
+    [SerializeField] private GameObject[] _colors;
     private PlayerMovement _playerMovement;
     private PlayerUiHandler _playerUiHandler;
-    public PlayerMovement GhostPrefab => _ghostPrefab;
-    public string PlayerName => _playerName;
+    private int _playerNumber;
+    public PlayerMovement ghostPrefab => _ghostPrefab;
+    public string playerName => _playerName;
+    public int playerNumber => _playerNumber;
 
     void Awake()
     {
@@ -30,7 +32,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         _playerUiHandler.UpdateNameText(_playerName);
-        GameManager.instance.AddPlayer(this);
+        GameManager.instance.AddPlayer(this, _playerNumber);
     }
 
     void OnDisable()
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour
                 _colors[2].SetActive(false);
                 _colors[3].SetActive(false);
                 _ghostPrefab = Resources.Load<PlayerMovement>("White Died Player");
+                _playerNumber = 1;
                 break;
             case PlayerColor.Blue:
                 _colors[1].SetActive(true);
@@ -55,6 +58,7 @@ public class Player : MonoBehaviour
                 _colors[2].SetActive(false);
                 _colors[3].SetActive(false);
                 _ghostPrefab = Resources.Load<PlayerMovement>("Blue Died Player");
+                _playerNumber = 2;
                 break;
             case PlayerColor.Red:
                 _colors[2].SetActive(true);
@@ -62,6 +66,7 @@ public class Player : MonoBehaviour
                 _colors[1].SetActive(false);
                 _colors[3].SetActive(false);
                 _ghostPrefab = Resources.Load<PlayerMovement>("Red Died Player");
+                _playerNumber = 3;
                 break;
             case PlayerColor.Black:
                 _colors[3].SetActive(true);
@@ -69,9 +74,15 @@ public class Player : MonoBehaviour
                 _colors[1].SetActive(false);
                 _colors[2].SetActive(false);
                 _ghostPrefab = Resources.Load<PlayerMovement>("Black");
+                _playerNumber = 4;
                 break;
             default:
                 break;
         }
+    }
+
+    public void SetPlayerNumber(int playerNumber)
+    {
+        _playerNumber = playerNumber;
     }
 }

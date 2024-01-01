@@ -21,7 +21,7 @@ public class Damageable : MonoBehaviour
 
     void Start()
     {
-        _ghostPrefab = _player.GhostPrefab;
+        _ghostPrefab = _player.ghostPrefab;
     }
 
     public void TakeDamage(int damage)

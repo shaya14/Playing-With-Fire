@@ -90,26 +90,29 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 direction = Vector3.zero;
         switch (_playerInput)
-        {
+        {          
             case PlayerInput.WASD:
                 direction = GetInputDirection(KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                _playerUiHandler.UpdateKeysText("W A S D");
+                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), "W", "A", "S", "D", KeyCode.Space);
+                //_playerUiHandler.UpdateKeysText("W A S D");
                 break;
             case PlayerInput.ArrowKeys:
                 direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                _playerUiHandler.UpdateKeysText("↑ ↓ ← →");
-                _playerUiHandler.keytext.fontSize = 42;
+                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), "↑", "↓", "←", "→", KeyCode.Keypad0);
+                //_playerUiHandler.UpdateKeysText("↑ ↓ ← →");
+                //_playerUiHandler.keytext.fontSize = 42;
                 break;
             case PlayerInput.Custom:
                 direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
-                if (numpadKeys.Contains(upKey) || numpadKeys.Contains(downKey) || numpadKeys.Contains(leftKey) || numpadKeys.Contains(rightKey))
-                {
-                    _playerUiHandler.keytext.rectTransform.sizeDelta = new Vector2(200, 250);
-                }
+                // _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
+                // if (numpadKeys.Contains(upKey) || numpadKeys.Contains(downKey) || numpadKeys.Contains(leftKey) || numpadKeys.Contains(rightKey))
+                // {
+                //     _playerUiHandler.keytext.rectTransform.sizeDelta = new Vector2(200, 250);
+                // }
+                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), upKey.ToString(), downKey.ToString(), leftKey.ToString(), rightKey.ToString(), bombKey);
                 break;
             case PlayerInput.None:
                 direction = Vector3.zero;
