@@ -22,15 +22,13 @@ public class BombController : MonoBehaviour
     private Tilemap _destructableTile;
     private bool _isBombPlacedHere = false;
     private PlayerUiHandler _playerUiHandler;
-    public Explosion ExplosionPrefab => _explosionPrefab;
-    public float ExplosionDuration => _explosionDuration;
-    public int ExplosionRadius => _explosionRadius;
-    public LayerMask ExplosionLayerMask => _explosionLayerMask;
-    public Destructable DestructablePrefab => _destructablePrefab;
-    public Tilemap DestructableTile => _destructableTile;
-    public int NumOfBombs => _maxBombAmount;
-
-    
+    public Explosion explosionPrefab => _explosionPrefab;
+    public float explosionDuration => _explosionDuration;
+    public int explosionRadius => _explosionRadius;
+    public LayerMask explosionLayerMask => _explosionLayerMask;
+    public Destructable destructablePrefab => _destructablePrefab;
+    public Tilemap destructableTile => _destructableTile;
+    public int numOfBombs => _maxBombAmount;
 
     void Awake()
     {

@@ -27,14 +27,14 @@ public class Bomb : MonoBehaviour
 
     void Blast()
     {
-        var explosion = Instantiate(_bombContoller.ExplosionPrefab, transform.position, Quaternion.identity);
-        explosion.SetActiveRenderer(explosion._spriteRendererStart);
-        explosion.DestroyAfter(_bombContoller.ExplosionDuration);
+        var explosion = Instantiate(_bombContoller.explosionPrefab, transform.position, Quaternion.identity);
+        explosion.SetActiveRenderer(explosion.spriteRendererStart);
+        explosion.DestroyAfter(_bombContoller.explosionDuration);
 
-        Explode(transform.position, Vector2.up, _bombContoller.ExplosionRadius);
-        Explode(transform.position, Vector2.down, _bombContoller.ExplosionRadius);
-        Explode(transform.position, Vector2.left, _bombContoller.ExplosionRadius);
-        Explode(transform.position, Vector2.right, _bombContoller.ExplosionRadius);
+        Explode(transform.position, Vector2.up, _bombContoller.explosionRadius);
+        Explode(transform.position, Vector2.down, _bombContoller.explosionRadius);
+        Explode(transform.position, Vector2.left, _bombContoller.explosionRadius);
+        Explode(transform.position, Vector2.right, _bombContoller.explosionRadius);
         //Destroy all breakable walls in blast radius    
         // In case the player died meanwhile.
         if (_bombContoller != null) {
@@ -59,31 +59,31 @@ public class Bomb : MonoBehaviour
 
         position += direction;
 
-        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _bombContoller.ExplosionLayerMask ))
+        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _bombContoller.explosionLayerMask ))
         {
             ClearDestructable(position);
             return;
         }
 
-        var explosion = Instantiate(_bombContoller.ExplosionPrefab, position, Quaternion.identity);
+        var explosion = Instantiate(_bombContoller.explosionPrefab, position, Quaternion.identity);
         // CR: [discuss] Init pattern.
         //               explosion.Init(activeRenderer, direction, duration);
-        explosion.SetActiveRenderer(lenght > 1 ? explosion._spriteRendererMiddle : explosion._spriteRendererEnd);
+        explosion.SetActiveRenderer(lenght > 1 ? explosion.spriteRendererMiddle : explosion.spriteRendererEnd);
         explosion.SetDirection(direction);
-        explosion.DestroyAfter(_bombContoller.ExplosionDuration);
+        explosion.DestroyAfter(_bombContoller.explosionDuration);
 
         Explode(position, direction, lenght - 1);
     }
 
     private void ClearDestructable(Vector2 position)
     {
-        Vector3Int cell = _bombContoller.DestructableTile.WorldToCell(position);
-        TileBase tile = _bombContoller.DestructableTile.GetTile(cell);
+        Vector3Int cell = _bombContoller.destructableTile.WorldToCell(position);
+        TileBase tile = _bombContoller.destructableTile.GetTile(cell);
 
         if(tile != null)
         {
-            Instantiate(_bombContoller.DestructablePrefab, position, Quaternion.identity);
-            _bombContoller.DestructableTile.SetTile(cell, null);
+            Instantiate(_bombContoller.destructablePrefab, position, Quaternion.identity);
+            _bombContoller.destructableTile.SetTile(cell, null);
         }
     }
     void OnTriggerStay2D(Collider2D other)

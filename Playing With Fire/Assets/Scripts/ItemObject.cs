@@ -23,7 +23,7 @@ public class ItemObject : MonoBehaviour
             {
                 case ItemType.ExtraBomb:
                     collision.GetComponent<BombController>().AddBomb();
-                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfBombsText(collision.GetComponent<BombController>().NumOfBombs);
+                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfBombsText(collision.GetComponent<BombController>().numOfBombs);
                     //GameManager.Instance.UpdateNumOfBombsText(collision.GetComponent<BombController>().NumOfBombs);
                     break;
                 case ItemType.SpeedBoost:
@@ -33,7 +33,7 @@ public class ItemObject : MonoBehaviour
                     break;
                 case ItemType.ExplosionRadiusBoost:
                     collision.GetComponent<BombController>().AddExplosionRadius();
-                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfRadiusBoostsText(collision.GetComponent<BombController>().ExplosionRadius);
+                    collision.GetComponent<PlayerUiHandler>().UpdateNumOfRadiusBoostsText(collision.GetComponent<BombController>().explosionRadius);
                     //GameManager.Instance.UpdateNumOfRadiusBoostsText(collision.GetComponent<BombController>().ExplosionRadius);
                     break;
                 default:

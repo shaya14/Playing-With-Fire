@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (_playerUiHandler != null)
         {
             _playerUiHandler.UpdateNumOfSpeedBoostsText(_moveSpeed);
-            _playerUiHandler.UpdateLives(_damageable.MaxHealth);
+            _playerUiHandler.UpdateLives(_damageable.maxHealth);
         }
     }
 

@@ -10,7 +10,7 @@ public class Damageable : MonoBehaviour
     private Player _player;
     private int _currentHealth;
     private bool _isInvulnerable = false;
-    public int MaxHealth => _maxHealth;
+    public int maxHealth => _maxHealth;
 
     private void Awake()
     {

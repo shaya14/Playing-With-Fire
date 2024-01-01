@@ -6,9 +6,13 @@ using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
-    public AnimatedSpriteRenderer _spriteRendererStart;
-    public AnimatedSpriteRenderer _spriteRendererMiddle;
-    public AnimatedSpriteRenderer _spriteRendererEnd;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererStart;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererMiddle;
+    [SerializeField] private AnimatedSpriteRenderer _spriteRendererEnd;
+
+    public AnimatedSpriteRenderer spriteRendererStart => _spriteRendererStart;
+    public AnimatedSpriteRenderer spriteRendererMiddle => _spriteRendererMiddle;
+    public AnimatedSpriteRenderer spriteRendererEnd => _spriteRendererEnd;
 
     public void SetActiveRenderer(AnimatedSpriteRenderer renderer)
     {

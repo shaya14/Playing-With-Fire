@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Destructable : MonoBehaviour
 {
-    [SerializeField] float _destructionTime = 1f;
+    [SerializeField] private float _destructionTime = 1f;
     [SerializeField] private float _dropChance;
     [SerializeField] private ItemObject[] _itemObjects;
     private void Start()
