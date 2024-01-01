@@ -53,11 +53,8 @@ public class PlayerMovement : MonoBehaviour
     KeyCode.KeypadPeriod, KeyCode.KeypadEnter, KeyCode.KeypadEquals, KeyCode.Keypad0
 };
     public PlayerInput playerInput => _playerInput;
-    public AnimatedSpriteRenderer ActiveSpriteRenderer => _activeSpriteRenderer;
-    public int NumOfSpeedBoosts => _moveSpeed;
-
-
-
+    public AnimatedSpriteRenderer activeSpriteRenderer => _activeSpriteRenderer;
+    public int numOfSpeedBoosts => _moveSpeed;
 
     void Awake()
     {
@@ -103,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
                 direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
                 MoveCalculation(direction, GetActiveSpriteRenderer(direction));
                 _playerUiHandler.UpdateKeysText("↑ ↓ ← →");
-                _playerUiHandler.Keytext.fontSize = 42;
+                _playerUiHandler.keytext.fontSize = 42;
                 break;
             case PlayerInput.Custom:
                 direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
@@ -111,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
                 _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
                 if (numpadKeys.Contains(upKey) || numpadKeys.Contains(downKey) || numpadKeys.Contains(leftKey) || numpadKeys.Contains(rightKey))
                 {
-                    _playerUiHandler.Keytext.rectTransform.sizeDelta = new Vector2(200, 250);
+                    _playerUiHandler.keytext.rectTransform.sizeDelta = new Vector2(200, 250);
                 }
                 break;
             case PlayerInput.None:

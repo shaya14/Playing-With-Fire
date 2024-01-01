@@ -305,12 +305,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerName: Player 1
   _playerColor: 0
+  _ghostPrefab: {fileID: 0}
   _colors:
   - {fileID: 64741682089265731}
   - {fileID: 1526367058576020577}
   - {fileID: 6406884222624908686}
   - {fileID: 2562767259095107656}
-  _ghostPrefab: {fileID: 0}
 --- !u!114 &8849452990317785334
 MonoBehaviour:
   m_ObjectHideFlags: 0

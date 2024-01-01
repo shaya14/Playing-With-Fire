@@ -28,14 +28,14 @@ public class Bomb : MonoBehaviour
     void Blast()
     {
         var explosion = Instantiate(_bombContoller.explosionPrefab, transform.position, Quaternion.identity);
-        explosion.SetActiveRenderer(explosion.spriteRendererStart);
-        explosion.DestroyAfter(_bombContoller.explosionDuration);
+        explosion.SetRendererAndDuration(explosion.spriteRendererStart, _bombContoller.explosionDuration);
 
         Explode(transform.position, Vector2.up, _bombContoller.explosionRadius);
         Explode(transform.position, Vector2.down, _bombContoller.explosionRadius);
         Explode(transform.position, Vector2.left, _bombContoller.explosionRadius);
         Explode(transform.position, Vector2.right, _bombContoller.explosionRadius);
         //Destroy all breakable walls in blast radius    
+
         // In case the player died meanwhile.
         if (_bombContoller != null) {
             _bombContoller.OnBombExploded();
@@ -66,11 +66,7 @@ public class Bomb : MonoBehaviour
         }
 
         var explosion = Instantiate(_bombContoller.explosionPrefab, position, Quaternion.identity);
-        // CR: [discuss] Init pattern.
-        //               explosion.Init(activeRenderer, direction, duration);
-        explosion.SetActiveRenderer(lenght > 1 ? explosion.spriteRendererMiddle : explosion.spriteRendererEnd);
-        explosion.SetDirection(direction);
-        explosion.DestroyAfter(_bombContoller.explosionDuration);
+        explosion.SetRendererDirectionAndDuration(lenght > 1 ? explosion.spriteRendererMiddle : explosion.spriteRendererEnd, direction, _bombContoller.explosionDuration);
 
         Explode(position, direction, lenght - 1);
     }

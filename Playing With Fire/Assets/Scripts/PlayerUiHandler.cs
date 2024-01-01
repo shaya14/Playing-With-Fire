@@ -13,7 +13,7 @@ public class PlayerUiHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _numOfSpeedBoostsText;
     [SerializeField] private TextMeshProUGUI _numOfRadiusBoostsText;
     [SerializeField] private TextMeshProUGUI _keysText;
-    public TextMeshProUGUI Keytext => _keysText;
+    public TextMeshProUGUI keytext => _keysText;
 
     public void DecreceLives()
     {

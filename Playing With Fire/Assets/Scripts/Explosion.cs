@@ -33,6 +33,18 @@ public class Explosion : MonoBehaviour
     {
         Destroy(gameObject, time);
     }
+    public void SetRendererAndDuration(AnimatedSpriteRenderer renderer, float time)
+    {
+        SetActiveRenderer(renderer);
+        DestroyAfter(time);
+    }
+
+    public void SetRendererDirectionAndDuration(AnimatedSpriteRenderer renderer, Vector2 direction, float time)
+    {
+        SetActiveRenderer(renderer);
+        SetDirection(direction);
+        DestroyAfter(time);
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

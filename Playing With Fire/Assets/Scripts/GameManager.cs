@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
-    public List<Player> _players;
-    public static GameManager Instance => _instance;
+    public static GameManager instance => _instance;
+    private List<Player> _players;
     private Player _fourthPlace;
     private Player _thirdPlace;
     private Player _secondPlace;
@@ -33,11 +33,11 @@ public class GameManager : MonoBehaviour
         {
             foreach (var player in _players)
             {
-                UiManager.Instance.WinnerNameText.text = player.PlayerName;
+                UiManager.instance.winnerNameText.text = player.PlayerName;
                 player.GetComponent<PlayerMovement>().enabled = false;
             }
 
-            UiManager.Instance.WinScreen.SetActive(true);
+            UiManager.instance.winScreen.SetActive(true);
         }
 
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -70,13 +70,13 @@ public class GameManager : MonoBehaviour
     private void SetLeaderBoardText()
     {
         if (_fourthPlace != null)
-            UiManager.Instance.FourthPlaceNameText.text = _fourthPlace.PlayerName;
+            UiManager.instance.fourthPlaceNameText.text = _fourthPlace.PlayerName;
 
         if (_thirdPlace != null)
-            UiManager.Instance.ThirdPlaceNameText.text = _thirdPlace.PlayerName;
+            UiManager.instance.thirdPlaceNameText.text = _thirdPlace.PlayerName;
 
         if (_secondPlace != null)
-            UiManager.Instance.SecondPlaceNameText.text = _secondPlace.PlayerName;
+            UiManager.instance.secondPlaceNameText.text = _secondPlace.PlayerName;
     }
 
     public void RestartLevel()
@@ -85,19 +85,19 @@ public class GameManager : MonoBehaviour
         _fourthPlace = null;
         _thirdPlace = null;
         _secondPlace = null;
-        UiManager.Instance.WinScreen.SetActive(false);
+        UiManager.instance.winScreen.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ResumeGame()
     {
-        UiManager.Instance.PauseMenu.SetActive(false);
+        UiManager.instance.pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }
 
     private void PauseMenu()
     {
-        UiManager.Instance.PauseMenu.SetActive(true);
+        UiManager.instance.pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }
 }

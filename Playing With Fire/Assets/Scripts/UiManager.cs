@@ -15,13 +15,13 @@ public class UiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _thirdPlaceNameText;
     [SerializeField] private TextMeshProUGUI _fourthPlaceNameText;
 
-    public static UiManager Instance => _instance;
-    public GameObject WinScreen => _winScreen;
-    public GameObject PauseMenu => _pauseMenu;
-    public TextMeshProUGUI WinnerNameText => _winnerNameText;
-    public TextMeshProUGUI SecondPlaceNameText => _secondPlaceNameText;
-    public TextMeshProUGUI ThirdPlaceNameText => _thirdPlaceNameText;
-    public TextMeshProUGUI FourthPlaceNameText => _fourthPlaceNameText;
+    public static UiManager instance => _instance;
+    public GameObject winScreen => _winScreen;
+    public GameObject pauseMenu => _pauseMenu;
+    public TextMeshProUGUI winnerNameText => _winnerNameText;
+    public TextMeshProUGUI secondPlaceNameText => _secondPlaceNameText;
+    public TextMeshProUGUI thirdPlaceNameText => _thirdPlaceNameText;
+    public TextMeshProUGUI fourthPlaceNameText => _fourthPlaceNameText;
     void Awake()
     {
         if (_instance == null)

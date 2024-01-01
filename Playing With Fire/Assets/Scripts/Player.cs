@@ -12,12 +12,12 @@ public class Player : MonoBehaviour
 {
     [SerializeField] string _playerName;
     [SerializeField] PlayerColor _playerColor;
+    [SerializeField] private PlayerMovement _ghostPrefab;
     [SerializeField] GameObject[] _colors;
-    public PlayerMovement GhostPrefab => _ghostPrefab;
     private PlayerMovement _playerMovement;
-    public PlayerMovement _ghostPrefab;
-    public string PlayerName => _playerName;
     private PlayerUiHandler _playerUiHandler;
+    public PlayerMovement GhostPrefab => _ghostPrefab;
+    public string PlayerName => _playerName;
 
     void Awake()
     {
@@ -30,12 +30,12 @@ public class Player : MonoBehaviour
     void Start()
     {
         _playerUiHandler.UpdateNameText(_playerName);
-        GameManager.Instance.AddPlayer(this);
+        GameManager.instance.AddPlayer(this);
     }
 
     void OnDisable()
     {
-        GameManager.Instance.RemovePlayer(this);
+        GameManager.instance.RemovePlayer(this);
     }
 
     public void SetPlayerColor()
