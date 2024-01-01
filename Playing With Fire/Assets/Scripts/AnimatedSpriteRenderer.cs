@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class AnimatedSpriteRenderer : MonoBehaviour
 {
+    [SerializeField] private Sprite _idleSprite;
+    [SerializeField] private Sprite[] _animationSprites;
+    [SerializeField] private float _animationTime = 0.25f;
+    [SerializeField] private bool _loop = true;
+    [SerializeField] private bool _idle = true;
     private SpriteRenderer _spriteRenderer;
-    public Sprite _idleSprite;
-    public Sprite[] _animationSprites;
-    public float _animationTime = 0.25f;
     private int _animationFrame;
-    public bool _loop = true;
-    public bool _idle = true;
 
     private void Awake()
     {
@@ -36,18 +36,22 @@ public class AnimatedSpriteRenderer : MonoBehaviour
     private void NextFrame()
     {
         _animationFrame++;
-        if(_loop && _animationFrame >= _animationSprites.Length)
+        if (_loop && _animationFrame >= _animationSprites.Length)
         {
             _animationFrame = 0;
         }
 
-        if(_idle)
+        if (_idle)
         {
             _spriteRenderer.sprite = _idleSprite;
         }
-        else if(_animationFrame >= 0 && _animationFrame < _animationSprites.Length)
+        else if (_animationFrame >= 0 && _animationFrame < _animationSprites.Length)
         {
             _spriteRenderer.sprite = _animationSprites[_animationFrame];
         }
+    }
+    public void SetIdle(bool idle)
+    {
+        _idle = idle;
     }
 }

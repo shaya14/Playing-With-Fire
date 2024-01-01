@@ -7,9 +7,9 @@ using UnityEngine.Tilemaps;
 
 public class Bomb : MonoBehaviour
 {
-    private float _blastTime = 3;
     private CircleCollider2D _collider;
     private BombController _bombContoller;
+    private float _blastTime = 3;
     
     void Awake()
     {
@@ -36,15 +36,12 @@ public class Bomb : MonoBehaviour
         Explode(transform.position, Vector2.left, _bombContoller.ExplosionRadius);
         Explode(transform.position, Vector2.right, _bombContoller.ExplosionRadius);
         //Destroy all breakable walls in blast radius    
-        
         // In case the player died meanwhile.
         if (_bombContoller != null) {
             _bombContoller.OnBombExploded();
         }
         
-        
         Destroy(gameObject);
-       
     }
 
     private IEnumerator BlastCoroutine()

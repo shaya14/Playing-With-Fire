@@ -325,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInput: 0
   _moveSpeed: 5
-  showSpriteRenderers: 1
+  showSpriteRenderers: 0
   _spriteRendererUp: {fileID: 0}
   _spriteRendererDown: {fileID: 0}
   _spriteRendererLeft: {fileID: 0}

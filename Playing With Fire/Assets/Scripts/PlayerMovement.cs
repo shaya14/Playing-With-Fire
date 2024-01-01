@@ -207,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
 
         _activeSpriteRenderer = spriteRenderer;
 
-        _activeSpriteRenderer._idle = direction == Vector3.zero;
+        _activeSpriteRenderer.SetIdle(direction == Vector3.zero);
 
 
     }
