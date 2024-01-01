@@ -9,14 +9,18 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
     public static GameManager instance => _instance;
-    private List<Player> _players;
+    [SerializeField] private List<Player> _startingPlayers;
+    private List<Player> _activePlayers;
     private Player _fourthPlace;
     private Player _thirdPlace;
     private Player _secondPlace;
 
     void Awake()
     {
-        _players = new List<Player>();
+        InitialGame();
+
+        _activePlayers = new List<Player>();
+        _startingPlayers = new List<Player>();
         if (_instance == null)
         {
             _instance = this;
@@ -27,18 +31,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+    }
+
     void Update()
     {
         SetLeaderBoardText();
-        if (_players.Count <= 1)
+        if (_activePlayers.Count <= 1)
         {
-            foreach (var player in _players)
+            foreach (var player in _activePlayers)
             {
-                UiManager.instance.winnerNameText.text = player.playerName;
+                GameUI.instance.winnerNameText.text = player.playerName;
                 player.GetComponent<PlayerMovement>().enabled = false;
             }
 
-            UiManager.instance.winScreen.SetActive(true);
+            GameUI.instance.winScreen.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -46,40 +54,49 @@ public class GameManager : MonoBehaviour
             PauseMenu();
         }
     }
-    public void AddPlayer(Player player,int playerNumber)
+    public void AddPlayer(Player player, int playerNumber)
     {
-        _players.Add(player);
+        _activePlayers.Add(player);
         player.SetPlayerNumber(playerNumber);
-        Debug.Log("Player added " + player.playerNumber);
+    }
+
+    private void InitialGame()
+    {
+
+            for (int i = 0; i < MainMenuManager.instance.numberOfPlayers; i++)
+            {
+                _startingPlayers[i].gameObject.SetActive(true);
+            }
+        
     }
     public void RemovePlayer(Player player)
     {
-        if (_players.Count == 4)
+        if (_activePlayers.Count == 4)
         {
             _fourthPlace = player;
         }
-        else if (_players.Count == 3)
+        else if (_activePlayers.Count == 3)
         {
             _thirdPlace = player;
         }
-        else if (_players.Count == 2)
+        else if (_activePlayers.Count == 2)
         {
             _secondPlace = player;
         }
 
-        _players.Remove(player);
+        _activePlayers.Remove(player);
     }
 
     private void SetLeaderBoardText()
     {
         if (_fourthPlace != null)
-            UiManager.instance.fourthPlaceNameText.text = _fourthPlace.playerName;
+            GameUI.instance.fourthPlaceNameText.text = _fourthPlace.playerName;
 
         if (_thirdPlace != null)
-            UiManager.instance.thirdPlaceNameText.text = _thirdPlace.playerName;
+            GameUI.instance.thirdPlaceNameText.text = _thirdPlace.playerName;
 
         if (_secondPlace != null)
-            UiManager.instance.secondPlaceNameText.text = _secondPlace.playerName;
+            GameUI.instance.secondPlaceNameText.text = _secondPlace.playerName;
     }
 
     public void RestartLevel()
@@ -88,99 +105,99 @@ public class GameManager : MonoBehaviour
         _fourthPlace = null;
         _thirdPlace = null;
         _secondPlace = null;
-        UiManager.instance.winScreen.SetActive(false);
+        GameUI.instance.winScreen.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ResumeGame()
     {
-        UiManager.instance.pauseMenu.SetActive(false);
+        GameUI.instance.pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void BackToPauseMenu()
     {
-        UiManager.instance.controlsScreen.SetActive(false);
-        UiManager.instance.pauseMenu.SetActive(true);
+        GameUI.instance.controlsScreen.SetActive(false);
+        GameUI.instance.pauseMenu.SetActive(true);
     }
 
     public void ControlsMenu()
     {
-        UiManager.instance.controlsScreen.SetActive(true);
-        UiManager.instance.pauseMenu.SetActive(false);
+        GameUI.instance.controlsScreen.SetActive(true);
+        GameUI.instance.pauseMenu.SetActive(false);
     }
 
     private void PauseMenu()
     {
-        UiManager.instance.pauseMenu.SetActive(true);
+        GameUI.instance.pauseMenu.SetActive(true);
         Time.timeScale = 0;
     }
 
-    public void UpdateInputMappingText(Player player,string up, string down, string right, string left, KeyCode bombKey)
+    public void UpdateInputMappingText(Player player, string up, string down, string right, string left, KeyCode bombKey)
     {
-        if(player.playerNumber == 1)
+        if (player.playerNumber == 1)
         {
-            UiManager.instance.p1NameText.text = player.playerName;
-            UiManager.instance.p1UpText.text = up;
-            UiManager.instance.p1DownText.text = down;
-            UiManager.instance.p1RightText.text = right;
-            UiManager.instance.p1LeftText.text = left;
-            UiManager.instance.p1BombText.text = bombKey.ToString();
-            UiManager.instance.p1NameText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1UpText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1DownText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1RightText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1LeftText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1BombText.color = UiManager.instance.p1Color;
-            UiManager.instance.p1Input.SetActive(true);
+            GameUI.instance.p1NameText.text = player.playerName;
+            GameUI.instance.p1UpText.text = up;
+            GameUI.instance.p1DownText.text = down;
+            GameUI.instance.p1RightText.text = right;
+            GameUI.instance.p1LeftText.text = left;
+            GameUI.instance.p1BombText.text = bombKey.ToString();
+            GameUI.instance.p1NameText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1UpText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1DownText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1RightText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1LeftText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1BombText.color = GameUI.instance.p1Color;
+            GameUI.instance.p1Input.SetActive(true);
         }
         else if (player.playerNumber == 2)
         {
-            UiManager.instance.p2NameText.text = player.playerName;
-            UiManager.instance.p2UpText.text = up;
-            UiManager.instance.p2DownText.text = down;
-            UiManager.instance.p2RightText.text = right;
-            UiManager.instance.p2LeftText.text = left;
-            UiManager.instance.p2BombText.text = bombKey.ToString();
-            UiManager.instance.p2NameText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2UpText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2DownText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2RightText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2LeftText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2BombText.color = UiManager.instance.p2Color;
-            UiManager.instance.p2Input.SetActive(true);
+            GameUI.instance.p2NameText.text = player.playerName;
+            GameUI.instance.p2UpText.text = up;
+            GameUI.instance.p2DownText.text = down;
+            GameUI.instance.p2RightText.text = right;
+            GameUI.instance.p2LeftText.text = left;
+            GameUI.instance.p2BombText.text = bombKey.ToString();
+            GameUI.instance.p2NameText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2UpText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2DownText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2RightText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2LeftText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2BombText.color = GameUI.instance.p2Color;
+            GameUI.instance.p2Input.SetActive(true);
         }
         else if (player.playerNumber == 3)
         {
-            UiManager.instance.p3NameText.text = player.playerName;
-            UiManager.instance.p3UpText.text = up;
-            UiManager.instance.p3DownText.text = down;
-            UiManager.instance.p3RightText.text = right;
-            UiManager.instance.p3LeftText.text = left;
-            UiManager.instance.p3BombText.text = bombKey.ToString();
-            UiManager.instance.p3NameText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3UpText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3DownText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3RightText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3LeftText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3BombText.color = UiManager.instance.p3Color;
-            UiManager.instance.p3Input.SetActive(true);
+            GameUI.instance.p3NameText.text = player.playerName;
+            GameUI.instance.p3UpText.text = up;
+            GameUI.instance.p3DownText.text = down;
+            GameUI.instance.p3RightText.text = right;
+            GameUI.instance.p3LeftText.text = left;
+            GameUI.instance.p3BombText.text = bombKey.ToString();
+            GameUI.instance.p3NameText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3UpText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3DownText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3RightText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3LeftText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3BombText.color = GameUI.instance.p3Color;
+            GameUI.instance.p3Input.SetActive(true);
         }
         else if (player.playerNumber == 4)
         {
-            UiManager.instance.p4NameText.text = player.playerName;
-            UiManager.instance.p4UpText.text = up;
-            UiManager.instance.p4DownText.text = down;
-            UiManager.instance.p4RightText.text = right;
-            UiManager.instance.p4LeftText.text = left;
-            UiManager.instance.p4BombText.text = bombKey.ToString();
-            UiManager.instance.p4NameText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4UpText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4DownText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4RightText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4LeftText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4BombText.color = UiManager.instance.p4Color;
-            UiManager.instance.p4Input.SetActive(true);
+            GameUI.instance.p4NameText.text = player.playerName;
+            GameUI.instance.p4UpText.text = up;
+            GameUI.instance.p4DownText.text = down;
+            GameUI.instance.p4RightText.text = right;
+            GameUI.instance.p4LeftText.text = left;
+            GameUI.instance.p4BombText.text = bombKey.ToString();
+            GameUI.instance.p4NameText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4UpText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4DownText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4RightText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4LeftText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4BombText.color = GameUI.instance.p4Color;
+            GameUI.instance.p4Input.SetActive(true);
         }
     }
 }

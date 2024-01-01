@@ -6,9 +6,9 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class GameUI : MonoBehaviour
 {
-    private static UiManager _instance;
+    private static GameUI _instance;
     [SerializeField] private GameObject _winScreen;
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _controlsScreen;
@@ -90,7 +90,7 @@ public class UiManager : MonoBehaviour
     public Color p4Color => _p4Color;
     #endregion  
 
-    public static UiManager instance => _instance;
+    public static GameUI instance => _instance;
     public GameObject winScreen => _winScreen;
     public GameObject pauseMenu => _pauseMenu;
     public GameObject controlsScreen => _controlsScreen;
@@ -112,13 +112,13 @@ public class UiManager : MonoBehaviour
     }
 }
 
-[CustomEditor(typeof(UiManager))]
+[CustomEditor(typeof(GameUI))]
 public class UiManagerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        UiManager uiManager = (UiManager)target;
+        GameUI uiManager = (GameUI)target;
         if (uiManager.showControlsInputs)
         {
             EditorGUILayout.PropertyField(serializedObject.FindProperty("_p1Input"));
