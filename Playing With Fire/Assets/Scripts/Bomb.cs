@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Tilemaps;
@@ -82,14 +81,10 @@ public class Bomb : MonoBehaviour
             _bombContoller.destructableTile.SetTile(cell, null);
         }
     }
-    void OnTriggerStay2D(Collider2D other)
-    {
-        _bombContoller.BombIsPlacedHere(true);
-    }
 
+    // CR: make sure this is not a bug in case of collision with ghosts/fire/...
     void OnTriggerExit2D(Collider2D other)
     {
         _collider.isTrigger = false;
-        _bombContoller.BombIsPlacedHere(false);
     }
 }

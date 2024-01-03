@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
-    [SerializeField] private PlayerMovement _ghostPrefab;
+    [SerializeField] private PlayerMovement _ghostPrefab; // CR: ghostPrefab should *not* be playerMovement.
     private PlayerMovement _playerMovement;
     private Player _player;
     private int _currentHealth;

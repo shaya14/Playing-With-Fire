@@ -1,20 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor;
 using UnityEngine;
-
-public enum PlayerInput
-{
-    WASD,
-    ArrowKeys,
-    Custom,
-    None
-}
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private int _moveSpeed;
     private Rigidbody2D _rigidBody;
     private BombController _bombController;
@@ -24,8 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isBlinking = false;
 
     #region SpriteRenderers
-    [HideInInspector] public bool showSpriteRenderers = true;
-
+    [HideInInspector] public bool showSpriteRenderers = true; // CR: no defaults in the code - only in prefabs.
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererUp;
 
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererDown;
@@ -39,12 +28,14 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Keys
-    [HideInInspector] public KeyCode upKey;
-    [HideInInspector] public KeyCode downKey;
-    [HideInInspector] public KeyCode leftKey;
-    [HideInInspector] public KeyCode rightKey;
-    [HideInInspector] public KeyCode bombKey;
+    public KeyCode upKey;
+    public KeyCode downKey;
+    public KeyCode leftKey;
+    public KeyCode rightKey;
+    public KeyCode bombKey;
     #endregion
+
+    // CR: unused, remove
     private List<KeyCode> numpadKeys = new List<KeyCode> {
     KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad4, KeyCode.Keypad6,
     KeyCode.Keypad7, KeyCode.Keypad2, KeyCode.Keypad1, KeyCode.Keypad3,
@@ -52,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     KeyCode.KeypadPlus, KeyCode.KeypadMinus, KeyCode.KeypadMultiply, KeyCode.KeypadDivide,
     KeyCode.KeypadPeriod, KeyCode.KeypadEnter, KeyCode.KeypadEquals, KeyCode.Keypad0
 };
-    public PlayerInput playerInput => _playerInput;
+    
     public AnimatedSpriteRenderer activeSpriteRenderer => _activeSpriteRenderer;
     public int numOfSpeedBoosts => _moveSpeed;
 
@@ -71,6 +62,9 @@ public class PlayerMovement : MonoBehaviour
             _playerUiHandler.UpdateNumOfSpeedBoostsText(_moveSpeed);
             _playerUiHandler.UpdateLives(_damageable.maxHealth);
         }
+
+        // CR: Make sure the ghost is not player-movement, so that this line doesn't throw an exception :)
+        GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), upKey.ToString(), downKey.ToString(), leftKey.ToString(), rightKey.ToString(), bombKey);
     }
 
     void FixedUpdate()
@@ -80,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // CR: rename 'SpawnBomb' -> 'UpdateBomb' or similar.
         SpawnBomb();
         if (_isBlinking)
         {
@@ -88,67 +83,19 @@ public class PlayerMovement : MonoBehaviour
     }
     void Movement()
     {
-        Vector3 direction = Vector3.zero;
-        switch (_playerInput)
-        {          
-            case PlayerInput.WASD:
-                direction = GetInputDirection(KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
-                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), "W", "A", "S", "D", KeyCode.Space);
-                //_playerUiHandler.UpdateKeysText("W A S D");
-                break;
-            case PlayerInput.ArrowKeys:
-                direction = GetInputDirection(KeyCode.UpArrow, KeyCode.DownArrow, KeyCode.LeftArrow, KeyCode.RightArrow);
-                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), "↑", "↓", "←", "→", KeyCode.Keypad0);
-                //_playerUiHandler.UpdateKeysText("↑ ↓ ← →");
-                //_playerUiHandler.keytext.fontSize = 42;
-                break;
-            case PlayerInput.Custom:
-                direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
-                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                // _playerUiHandler.UpdateKeysText(upKey.ToString() + " " + downKey.ToString() + " " + leftKey.ToString() + " " + rightKey.ToString());
-                // if (numpadKeys.Contains(upKey) || numpadKeys.Contains(downKey) || numpadKeys.Contains(leftKey) || numpadKeys.Contains(rightKey))
-                // {
-                //     _playerUiHandler.keytext.rectTransform.sizeDelta = new Vector2(200, 250);
-                // }
-                GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), upKey.ToString(), downKey.ToString(), leftKey.ToString(), rightKey.ToString(), bombKey);
-                break;
-            case PlayerInput.None:
-                direction = Vector3.zero;
-                MoveCalculation(direction, GetActiveSpriteRenderer(direction));
-                break;
-            default:
-                break;
-        }
+        Vector3 direction = GetInputDirection(upKey, downKey, leftKey, rightKey);
+        MoveCalculation(direction, GetActiveSpriteRenderer(direction));
     }
 
     void SpawnBomb()
     {
-        switch (_playerInput)
+        if (Input.GetKeyDown(bombKey))
         {
-            case PlayerInput.WASD:
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    _bombController.PlaceBomb();
-                }
-                break;
-            case PlayerInput.ArrowKeys:
-                if (Input.GetKeyDown(KeyCode.Keypad0))
-                {
-                    _bombController.PlaceBomb();
-                }
-                break;
-            case PlayerInput.Custom:
-                if (Input.GetKeyDown(bombKey))
-                {
-                    _bombController.PlaceBomb();
-                }
-                break;
-            default:
-                break;
+            _bombController.PlaceBomb();
         }
     }
+    
+    // CR: [discuss] Remove
     public void GetRenderers()
     {
         AnimatedSpriteRenderer[] spriteRenderers = GetComponentsInChildren<AnimatedSpriteRenderer>();
@@ -208,8 +155,6 @@ public class PlayerMovement : MonoBehaviour
         _activeSpriteRenderer = spriteRenderer;
 
         _activeSpriteRenderer.SetIdle(direction == Vector3.zero);
-
-
     }
 
     AnimatedSpriteRenderer GetActiveSpriteRenderer(Vector3 direction)
@@ -243,6 +188,8 @@ public class PlayerMovement : MonoBehaviour
     {
         StartCoroutine(Blink());
     }
+
+    // CR: [discuss]
     public void GhostCoroutine()
     {
         StartCoroutine(GhostUpAndDisappear());
@@ -250,10 +197,10 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Blink()
     {
         _timer = 0;
-        _isBlinking = true;
+        _isBlinking = true; // CR: [discuss] remove
         _damageable.SetInvulnerable(true);
 
-        while (_timer < 3)
+        while (_timer < 3) // CR: [discuss]
         {
             _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
             yield return new WaitForSeconds(0.1f);
@@ -316,51 +263,3 @@ public class PlayerMovement : MonoBehaviour
     }
 }
 
-[CustomEditor(typeof(PlayerMovement))]
-public class PlayerMovementEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        PlayerMovement playerController = (PlayerMovement)target;
-
-        EditorGUILayout.Space();
-        playerController.showSpriteRenderers = EditorGUILayout.Toggle("Show Sprite Renderers", playerController.showSpriteRenderers);
-        EditorGUILayout.Space();
-
-        if (playerController.playerInput == PlayerInput.Custom)
-        {
-            EditorGUILayout.Space(); // Add some space to separate custom input fields from the rest
-
-            EditorGUI.BeginChangeCheck();
-
-            playerController.upKey = (KeyCode)EditorGUILayout.EnumPopup("Up Key", playerController.upKey);
-            playerController.downKey = (KeyCode)EditorGUILayout.EnumPopup("Down Key", playerController.downKey);
-            playerController.leftKey = (KeyCode)EditorGUILayout.EnumPopup("Left Key", playerController.leftKey);
-            playerController.rightKey = (KeyCode)EditorGUILayout.EnumPopup("Right Key", playerController.rightKey);
-            playerController.bombKey = (KeyCode)EditorGUILayout.EnumPopup("Bomb Key", playerController.bombKey);
-
-            EditorGUILayout.Space();
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorUtility.SetDirty(playerController);
-            }
-        }
-
-        if (playerController.showSpriteRenderers)
-        {
-            // Draw the AnimatedSpriteRenderer fields
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererUp"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererDown"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererLeft"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererRight"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("_spriteRendererDie"));
-        }
-
-        // Apply any changes
-        serializedObject.ApplyModifiedProperties();
-    }
-
-
-}

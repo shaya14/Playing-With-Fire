@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -13,6 +12,7 @@ public class BombController : MonoBehaviour
 
     [Header("Explosion")]
     [SerializeField] private Explosion _explosionPrefab;
+    // CR: private. Same everywhere.
     [SerializeField] float _explosionDuration;
     [SerializeField] int _explosionRadius;
     [SerializeField] LayerMask _explosionLayerMask;
@@ -20,8 +20,8 @@ public class BombController : MonoBehaviour
     [Header("Destructable")]
     [SerializeField] Destructable _destructablePrefab;
     private Tilemap _destructableTile;
-    private bool _isBombPlacedHere = false;
     private PlayerUiHandler _playerUiHandler;
+
     public Explosion explosionPrefab => _explosionPrefab;
     public float explosionDuration => _explosionDuration;
     public int explosionRadius => _explosionRadius;
@@ -60,7 +60,7 @@ public class BombController : MonoBehaviour
 
     public void PlaceBomb()
     {
-        if (_bombRemaining > 0 && !_isBombPlacedHere)
+        if (_bombRemaining > 0 && !IsBombPlacedHere())
         {
             InstantiateBomb();
             _bombRemaining--;
@@ -78,8 +78,23 @@ public class BombController : MonoBehaviour
         _explosionRadius++;
     }
 
-    public void BombIsPlacedHere(bool isPlaced)
-    {
-        _isBombPlacedHere = isPlaced;
+    private bool IsBombPlacedHere() {
+        Vector2 tileCenter = new Vector2(
+            Mathf.Round(transform.position.x),
+            Mathf.Round(transform.position.y)
+        );
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(
+            origin: tileCenter,
+            direction: Vector2.zero
+        );
+
+        foreach (RaycastHit2D hit in hits) {
+            if (hit.collider != null && hit.collider.GetComponent<Bomb>() != null) {
+                return true;
+            }
+        }
+    
+        return false;
     }
 }

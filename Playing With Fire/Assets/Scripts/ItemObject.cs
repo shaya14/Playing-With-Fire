@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+
 public enum ItemType
 {
     ExtraBomb,
@@ -17,7 +17,7 @@ public class ItemObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.GetComponent<Player>() != null)
         {
             switch (_itemType)
             {
@@ -45,18 +45,3 @@ public class ItemObject : MonoBehaviour
     }
 }
 
-[CustomEditor(typeof(ItemObject))]
-public class ItemObjectEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        ItemObject itemObject = (ItemObject)target;
-
-        if (itemObject._itemType == ItemType.SpeedBoost)
-        {
-            itemObject.SetSpeedBoostAmount(EditorGUILayout.IntField("Speed Boost Amount", itemObject.speedBoostAmount));
-        }
-    }
-}
