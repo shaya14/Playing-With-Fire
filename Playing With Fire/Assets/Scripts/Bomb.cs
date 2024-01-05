@@ -9,13 +9,14 @@ public class Bomb : MonoBehaviour
     private CircleCollider2D _collider;
     private BombController _bombContoller;
     private float _blastTime = 3;
-    
+
     void Awake()
     {
-        _collider = GetComponent<CircleCollider2D>();       
+        _collider = GetComponent<CircleCollider2D>();
     }
 
-    public void Init(BombController bombController) {
+    public void Init(BombController bombController)
+    {
         _bombContoller = bombController;
     }
 
@@ -36,10 +37,11 @@ public class Bomb : MonoBehaviour
         //Destroy all breakable walls in blast radius    
 
         // In case the player died meanwhile.
-        if (_bombContoller != null) {
+        if (_bombContoller != null)
+        {
             _bombContoller.OnBombExploded();
         }
-        
+
         Destroy(gameObject);
     }
 
@@ -50,15 +52,16 @@ public class Bomb : MonoBehaviour
         Blast();
     }
 
-    private void Explode(Vector2 position , Vector2 direction , int lenght)
+    private void Explode(Vector2 position, Vector2 direction, int lenght)
     {
-        if(lenght <= 0){
+        if (lenght <= 0)
+        {
             return;
         }
 
         position += direction;
 
-        if(Physics2D.OverlapBox(position, Vector2.one / 2f , 0 ,  _bombContoller.explosionLayerMask ))
+        if (Physics2D.OverlapBox(position, Vector2.one / 2f, 0, _bombContoller.explosionLayerMask))
         {
             ClearDestructable(position);
             return;
@@ -75,16 +78,18 @@ public class Bomb : MonoBehaviour
         Vector3Int cell = _bombContoller.destructableTile.WorldToCell(position);
         TileBase tile = _bombContoller.destructableTile.GetTile(cell);
 
-        if(tile != null)
+        if (tile != null)
         {
             Instantiate(_bombContoller.destructablePrefab, position, Quaternion.identity);
             _bombContoller.destructableTile.SetTile(cell, null);
         }
     }
 
-    // CR: make sure this is not a bug in case of collision with ghosts/fire/...
     void OnTriggerExit2D(Collider2D other)
     {
-        _collider.isTrigger = false;
+        if (other.GetComponent<Player>() != null)
+        {
+            _collider.isTrigger = false;
+        }
     }
 }

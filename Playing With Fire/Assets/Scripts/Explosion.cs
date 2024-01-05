@@ -48,7 +48,7 @@ public class Explosion : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.GetComponent<Player>() != null)
         {
             other.GetComponent<Damageable>().TakeDamage(1);
         }

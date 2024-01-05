@@ -54,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
             _playerUiHandler.UpdateLives(_damageable.maxHealth);
         }
 
-        // CR: Make sure the ghost is not player-movement, so that this line doesn't throw an exception :)
         GameManager.instance.UpdateInputMappingText(GetComponent<Player>(), upKey.ToString(), downKey.ToString(), leftKey.ToString(), rightKey.ToString(), bombKey);
     }
 
@@ -85,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    // CR: [discuss] Remove 
+    // CR: [discuss] Remove // why? its essential for the playes animation to work
     public void GetRenderers()
     {
         AnimatedSpriteRenderer[] spriteRenderers = GetComponentsInChildren<AnimatedSpriteRenderer>();
@@ -182,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator Blink()
     {
         _timer = 0;
-        _isBlinking = true; // CR: [discuss] remove
+        _isBlinking = true; // CR: [discuss] remove // how i should do it? the timer dont work if not in update
         _damageable.SetInvulnerable(true);
 
         while (_timer < 3) // CR: [discuss]
