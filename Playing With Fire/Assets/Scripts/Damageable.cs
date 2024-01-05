@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damageable : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
-    [SerializeField] private PlayerMovement _ghostPrefab; // CR: ghostPrefab should *not* be playerMovement.
+    [SerializeField] private GameObject _ghostPrefab;
     private PlayerMovement _playerMovement;
     private Player _player;
     private int _currentHealth;
@@ -21,7 +21,7 @@ public class Damageable : MonoBehaviour
 
     void Start()
     {
-        _ghostPrefab = _player.ghostPrefab;
+        _ghostPrefab = _player.ghostPrefab.gameObject;
     }
 
     public void TakeDamage(int damage)
@@ -42,12 +42,40 @@ public class Damageable : MonoBehaviour
     }
     private void InstantiateGhost()
     {
-        var ghost = Instantiate(_ghostPrefab, transform.position, Quaternion.identity);
-        ghost.GhostCoroutine();
+        Vector2 ghostPosition = new Vector2(transform.position.x, transform.position.y + 0.4375f);
+        var ghost = Instantiate(_ghostPrefab, ghostPosition, Quaternion.identity);
+        GhostCoroutine(ghost);
     }
 
     public void SetInvulnerable(bool isInvulnerable)
     {
         _isInvulnerable = isInvulnerable;
     }
+
+    public void GhostCoroutine(GameObject ghost)
+    {
+        StartCoroutine(GhostUpAndDisappear(ghost));
+    }
+
+    private IEnumerator GhostUpAndDisappear(GameObject ghost)
+    {
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
+        ghost.transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.6f);
+        ghost.transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.4f);
+        ghost.transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
+        ghost.transform.position += Vector3.up * 0.25f;
+        yield return new WaitForSeconds(0.25f);
+        ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0f);
+        ghost.transform.position += Vector3.up * 0.2f;
+        yield return new WaitForSeconds(0.2f);
+
+        Destroy(ghost.gameObject);
+    }
+
 }

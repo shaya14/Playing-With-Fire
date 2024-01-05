@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isBlinking = false;
 
     #region SpriteRenderers
-    [HideInInspector] public bool showSpriteRenderers = true; // CR: no defaults in the code - only in prefabs.
+    [HideInInspector] public bool showSpriteRenderers;
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererUp;
 
     [HideInInspector][SerializeField] private AnimatedSpriteRenderer _spriteRendererDown;
@@ -34,15 +34,6 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode rightKey;
     public KeyCode bombKey;
     #endregion
-
-    // CR: unused, remove
-    private List<KeyCode> numpadKeys = new List<KeyCode> {
-    KeyCode.Keypad8, KeyCode.Keypad5, KeyCode.Keypad4, KeyCode.Keypad6,
-    KeyCode.Keypad7, KeyCode.Keypad2, KeyCode.Keypad1, KeyCode.Keypad3,
-    KeyCode.Keypad9, KeyCode.Keypad3, KeyCode.Keypad7, KeyCode.Keypad1,
-    KeyCode.KeypadPlus, KeyCode.KeypadMinus, KeyCode.KeypadMultiply, KeyCode.KeypadDivide,
-    KeyCode.KeypadPeriod, KeyCode.KeypadEnter, KeyCode.KeypadEquals, KeyCode.Keypad0
-};
     
     public AnimatedSpriteRenderer activeSpriteRenderer => _activeSpriteRenderer;
     public int numOfSpeedBoosts => _moveSpeed;
@@ -74,8 +65,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // CR: rename 'SpawnBomb' -> 'UpdateBomb' or similar.
-        SpawnBomb();
+        UpdateBomb();
         if (_isBlinking)
         {
             _timer += Time.deltaTime;
@@ -87,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         MoveCalculation(direction, GetActiveSpriteRenderer(direction));
     }
 
-    void SpawnBomb()
+    void UpdateBomb()
     {
         if (Input.GetKeyDown(bombKey))
         {
@@ -95,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    // CR: [discuss] Remove
+    // CR: [discuss] Remove 
     public void GetRenderers()
     {
         AnimatedSpriteRenderer[] spriteRenderers = GetComponentsInChildren<AnimatedSpriteRenderer>();
@@ -189,11 +179,6 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(Blink());
     }
 
-    // CR: [discuss]
-    public void GhostCoroutine()
-    {
-        StartCoroutine(GhostUpAndDisappear());
-    }
     private IEnumerator Blink()
     {
         _timer = 0;
@@ -219,27 +204,6 @@ public class PlayerMovement : MonoBehaviour
         _spriteRendererDown.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
         _spriteRendererLeft.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
         _spriteRendererRight.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
-    }
-    private IEnumerator GhostUpAndDisappear()
-    {
-        _activeSpriteRenderer = _spriteRendererDown;
-        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.8f);
-        transform.position += Vector3.up * 0.25f;
-        yield return new WaitForSeconds(0.25f);
-        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.6f);
-        transform.position += Vector3.up * 0.25f;
-        yield return new WaitForSeconds(0.25f);
-        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.4f);
-        transform.position += Vector3.up * 0.25f;
-        yield return new WaitForSeconds(0.25f);
-        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.2f);
-        transform.position += Vector3.up * 0.25f;
-        yield return new WaitForSeconds(0.25f);
-        _activeSpriteRenderer.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0f);
-        transform.position += Vector3.up * 0.2f;
-        yield return new WaitForSeconds(0.2f);
-
-        Destroy(gameObject);
     }
 
     public void DeathSequence()

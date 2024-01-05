@@ -12,12 +12,12 @@ public class Player : MonoBehaviour
 {
     [SerializeField] string _playerName;
     [SerializeField] private PlayerColor _playerColor;
-    [SerializeField] private PlayerMovement _ghostPrefab;
+    [SerializeField] private GameObject _ghostPrefab;
     [SerializeField] private GameObject[] _colors;
     private PlayerMovement _playerMovement;
     private PlayerUiHandler _playerUiHandler;
     private int _playerNumber;
-    public PlayerMovement ghostPrefab => _ghostPrefab;
+    public GameObject ghostPrefab => _ghostPrefab;
     public string playerName => _playerName;
     public int playerNumber => _playerNumber;
 
@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
                 _colors[1].SetActive(false);
                 _colors[2].SetActive(false);
                 _colors[3].SetActive(false);
-                _ghostPrefab = Resources.Load<PlayerMovement>("White Died Player");
+                _ghostPrefab = Resources.Load<GameObject>("White Died Player");
                 _playerNumber = 1;
                 break;
             case PlayerColor.Blue:
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
                 _colors[0].SetActive(false);
                 _colors[2].SetActive(false);
                 _colors[3].SetActive(false);
-                _ghostPrefab = Resources.Load<PlayerMovement>("Blue Died Player");
+                _ghostPrefab = Resources.Load<GameObject>("Blue Died Player");
                 _playerNumber = 2;
                 break;
             case PlayerColor.Red:
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
                 _colors[0].SetActive(false);
                 _colors[1].SetActive(false);
                 _colors[3].SetActive(false);
-                _ghostPrefab = Resources.Load<PlayerMovement>("Red Died Player");
+                _ghostPrefab = Resources.Load<GameObject>("Red Died Player");
                 _playerNumber = 3;
                 break;
             case PlayerColor.Black:
@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
                 _colors[0].SetActive(false);
                 _colors[1].SetActive(false);
                 _colors[2].SetActive(false);
-                _ghostPrefab = Resources.Load<PlayerMovement>("Black");
+                _ghostPrefab = Resources.Load<GameObject>("Black");
                 _playerNumber = 4;
                 break;
             default:

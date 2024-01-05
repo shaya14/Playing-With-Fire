@@ -12,9 +12,8 @@ public class BombController : MonoBehaviour
 
     [Header("Explosion")]
     [SerializeField] private Explosion _explosionPrefab;
-    // CR: private. Same everywhere.
-    [SerializeField] float _explosionDuration;
-    [SerializeField] int _explosionRadius;
+    [SerializeField] private float _explosionDuration;
+    [SerializeField] private int _explosionRadius;
     [SerializeField] LayerMask _explosionLayerMask;
 
     [Header("Destructable")]
