@@ -10,6 +10,10 @@ public class Explosion : MonoBehaviour
     [SerializeField] private AnimatedSpriteRenderer _spriteRendererMiddle;
     [SerializeField] private AnimatedSpriteRenderer _spriteRendererEnd;
 
+    // CR: [discuss] these don't need to be public.
+    //     You are only using them as parameters to your 'Init' function.
+    //     but - the caller of your 'Init' function shouldn't be exposed to the explosion's
+    //     details such as sprites. See also code section below.
     public AnimatedSpriteRenderer spriteRendererStart => _spriteRendererStart;
     public AnimatedSpriteRenderer spriteRendererMiddle => _spriteRendererMiddle;
     public AnimatedSpriteRenderer spriteRendererEnd => _spriteRendererEnd;
@@ -39,6 +43,16 @@ public class Explosion : MonoBehaviour
         DestroyAfter(time);
     }
 
+    // CR: rename Init.
+    // CR: 'time' should be a SerializeField, not a parameter (explsionTime is always the same for)
+    //     all explosions and does not change during the game.
+    // CR: [discuss] see below:
+            // public enum ExplosionAppearance {
+            //     Start, // i.e. the explosion's center
+            //     Middle,
+            //     End
+            // }
+            // public void Init(ExplosionAppearance appearance, Vector2 direction)
     public void SetRendererDirectionAndDuration(AnimatedSpriteRenderer renderer, Vector2 direction, float time)
     {
         SetActiveRenderer(renderer);

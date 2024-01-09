@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// CR: [discuss] how to simplify (GameSettings pattern) 
 public class MainMenuManager : MonoBehaviour
 {
     private static MainMenuManager _instance;
@@ -32,6 +33,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartNewGame()
     {
+        // CR: [style] never have if/else/for/... without braces. 
         if(MainMenuUI.instance.dropdown.value == 0)
             Debug.Log("Please select number of players");
         else

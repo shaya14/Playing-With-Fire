@@ -12,13 +12,13 @@ public class BombController : MonoBehaviour
 
     [Header("Explosion")]
     [SerializeField] private Explosion _explosionPrefab;
-    [SerializeField] private float _explosionDuration;
+    [SerializeField] private float _explosionDuration; // CR: move to 'Explosion' class. (Not used here, same for all players and bombs).
     [SerializeField] private int _explosionRadius;
-    [SerializeField] LayerMask _explosionLayerMask;
+    [SerializeField] LayerMask _explosionLayerMask; // CR: private. move to 'Bomb' class (not used here).
 
     [Header("Destructable")]
-    [SerializeField] Destructable _destructablePrefab;
-    private Tilemap _destructableTile;
+    [SerializeField] Destructable _destructablePrefab; // CR: private. Move to 'Bomb' class (not used here).
+    private Tilemap _destructableTile; // CR: rename *destructableTiles*. move to 'Bomb' class (not used here).
     private PlayerUiHandler _playerUiHandler;
 
     public Explosion explosionPrefab => _explosionPrefab;
@@ -69,7 +69,9 @@ public class BombController : MonoBehaviour
     public void AddBomb()
     {
         _maxBombAmount++;
-        _bombRemaining = _maxBombAmount;
+        // CR: '_bombRemaining++'. Otherwise, picking up the powerup when you have 2 deployed will "refill",
+        //     allowing the player to place *5* bombs at the same time.
+        _bombRemaining = _maxBombAmount; 
     }
 
     public void AddExplosionRadius()

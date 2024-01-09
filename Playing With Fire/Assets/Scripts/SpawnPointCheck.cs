@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// CR: [discuss] remove this code
 public class SpawnPointCheck : MonoBehaviour
 {
     [SerializeField] private GameObject _canvasToggle;

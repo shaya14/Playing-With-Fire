@@ -8,7 +8,7 @@ public class Bomb : MonoBehaviour
 {
     private CircleCollider2D _collider;
     private BombController _bombContoller;
-    private float _blastTime = 3;
+    private float _blastTime = 3; // CR: no defaults in the code.
 
     void Awake()
     {

@@ -31,6 +31,7 @@ public class Damageable : MonoBehaviour
             _currentHealth -= damage;
 
             InstantiateGhost();
+            // CR: just 'GetComponent' immediately. (It's the same gameObject anyway).
             _playerMovement.GetComponent<PlayerUiHandler>().DecreceLives();
             _playerMovement.RendererBlink();
 
