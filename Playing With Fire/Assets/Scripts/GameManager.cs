@@ -16,10 +16,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (MainMenuManager.instance != null)
-        {
-            InitialGame();
-        }
+        InitialGame();
 
         _activePlayers = new List<Player>();
         _startingPlayers = new List<Player>();
@@ -65,7 +62,7 @@ public class GameManager : MonoBehaviour
     private void InitialGame()
     {
 
-        for (int i = 0; i < MainMenuManager.instance.numberOfPlayers; i++)
+        for (int i = 0; i < GameSettings.instance.numOfPlayers; i++)
         {
             _startingPlayers[i].gameObject.SetActive(true);
         }

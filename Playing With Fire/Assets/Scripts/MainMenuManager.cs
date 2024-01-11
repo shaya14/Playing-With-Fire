@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// CR: [discuss] how to simplify (GameSettings pattern) 
+// CR: fix exit buttons
+// CR: fix leaderboards bug
+
 public class MainMenuManager : MonoBehaviour
 {
     private static MainMenuManager _instance;
     public static MainMenuManager instance => _instance;
-    private int _numberOfPlayers;
-
-    public int numberOfPlayers => _numberOfPlayers;
 
     void Awake()
     {
@@ -22,7 +21,6 @@ public class MainMenuManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
     }
     
     public void NewGamePanel()
@@ -45,13 +43,13 @@ public class MainMenuManager : MonoBehaviour
         switch (MainMenuUI.instance.dropdown.value)
         {
             case 1:
-                _numberOfPlayers = 2;
+                GameSettings.instance.SetNumOfPlayers(2);
                 break;
             case 2:
-                _numberOfPlayers = 3;
+                GameSettings.instance.SetNumOfPlayers(3);
                 break;
             case 3:
-                _numberOfPlayers = 4;
+                GameSettings.instance.SetNumOfPlayers(4);
                 break;
         }
 

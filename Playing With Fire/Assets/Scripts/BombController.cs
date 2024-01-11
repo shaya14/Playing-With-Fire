@@ -12,7 +12,6 @@ public class BombController : MonoBehaviour
 
     [Header("Explosion")]
     [SerializeField] private Explosion _explosionPrefab;
-    [SerializeField] private float _explosionDuration; // CR: move to 'Explosion' class. (Not used here, same for all players and bombs).
     [SerializeField] private int _explosionRadius;
     [SerializeField] LayerMask _explosionLayerMask; // CR: private. move to 'Bomb' class (not used here).
 
@@ -22,7 +21,6 @@ public class BombController : MonoBehaviour
     private PlayerUiHandler _playerUiHandler;
 
     public Explosion explosionPrefab => _explosionPrefab;
-    public float explosionDuration => _explosionDuration;
     public int explosionRadius => _explosionRadius;
     public LayerMask explosionLayerMask => _explosionLayerMask;
     public Destructable destructablePrefab => _destructablePrefab;

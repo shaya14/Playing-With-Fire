@@ -28,7 +28,7 @@ public class Bomb : MonoBehaviour
     void Blast()
     {
         var explosion = Instantiate(_bombContoller.explosionPrefab, transform.position, Quaternion.identity);
-        explosion.SetRendererAndDuration(explosion.spriteRendererStart, _bombContoller.explosionDuration);
+        explosion.SetRendererAndDuration(Explosion.Appearance.Start);
 
         Explode(transform.position, Vector2.up, _bombContoller.explosionRadius);
         Explode(transform.position, Vector2.down, _bombContoller.explosionRadius);
@@ -68,7 +68,7 @@ public class Bomb : MonoBehaviour
         }
 
         var explosion = Instantiate(_bombContoller.explosionPrefab, position, Quaternion.identity);
-        explosion.SetRendererDirectionAndDuration(lenght > 1 ? explosion.spriteRendererMiddle : explosion.spriteRendererEnd, direction, _bombContoller.explosionDuration);
+        explosion.Init(lenght > 1 ? Explosion.Appearance.Middle : Explosion.Appearance.End, direction);
 
         Explode(position, direction, lenght - 1);
     }
